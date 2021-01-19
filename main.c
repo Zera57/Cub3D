@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:41:39 by hapryl            #+#    #+#             */
-/*   Updated: 2021/01/17 21:12:55 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/01/19 15:38:05 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ void            ft_mlx_draw_rectangle(t_data *data, int x1, int y1, int x2, int 
 	while (i < y2)
 	{
 		j = x1;
-		while (j < x2)
+		while (j <= x2)
 		{
+            //printf("x = %d, y = %d", j, i);
 			my_mlx_pixel_put(data, j, i, color);
 			j++;
 		}
@@ -95,10 +96,6 @@ int	            key_move(t_data *data, int keycode)
     }
     //Zachistka
     ft_mlx_draw_rectangle(data, 0, 0, data->settings->R1, data->settings->R2, data->settings->F);
-    //Map
-    ft_mlx_draw_map(data);
-    //Player
-    ft_mlx_draw_rectangle(data, data->player.position.x - 5, data->player.position.y - 5, data->player.position.x + 5, data->player.position.y + 5, 0x00FF0000);
     //Vzor
     float   x, y;
     /*double	angle = data->player.angle - M_PI_4;
@@ -127,8 +124,9 @@ int	            key_move(t_data *data, int keycode)
             y = data->player.position.y + c*sin(angle);
             if (data->map[(int)(y/data->square)][(int)(x/data->square)] != 0)
             {
-                printf("x = %f\ny = %f\n%d\n\n", x, y, data->map[(int)(y/data->square)][(int)(x/data->square)]);
-                ft_mlx_draw_rectangle(data, i, c, i + 1, 1080, 0xFFFFFFFF);            
+                int wallH = data->settings->R2 * data->square / c;
+                if (wallH > data->settings->R2) wallH = data->settings->R2;
+                ft_mlx_draw_rectangle(data, i, data->settings->R2/2 - wallH/2, i, data->settings->R2/2 + wallH/2, 0x00FFFFFF);            
                 break;
             }
             my_mlx_pixel_put(data, x, y, 0x0000FF00);
@@ -136,7 +134,11 @@ int	            key_move(t_data *data, int keycode)
             size_t pix_y = y*data->square*4;
         }
     }
-	mlx_put_image_to_window(data->mlx, data->mlx_win, data->img, 0, 0);
+    //Map
+    ft_mlx_draw_map(data);
+    //Player
+    ft_mlx_draw_rectangle(data, data->player.position.x - 5, data->player.position.y - 5, data->player.position.x + 5, data->player.position.y + 5, 0x00FF0000);
+    mlx_put_image_to_window(data->mlx, data->mlx_win, data->img, 0, 0);
     return (0);
 }
 
@@ -183,8 +185,8 @@ int             main(void)
         for (int x = 0; x < 19; x++)
             data.map[y][x] = map[y][x];
     data.square = 25;
-    data.player.position.x = 500/4;
-    data.player.position.y = 500/4;
+    data.player.position.x = data.settings->R1 / 2 / 4;
+    data.player.position.y = data.settings->R2 / 2 / 4;
     data.player.angle = 0;
     data.player.speed = 5;
     data.mlx = mlx_init();
