@@ -6,14 +6,14 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 19:36:34 by hapryl            #+#    #+#             */
-/*   Updated: 2021/01/17 20:31:07 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/01/20 19:25:42 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# include "gnl/get_next_line.h"
+# include "getnl/get_next_line.h"
 # include <math.h>
 
 typedef	struct		s_point
@@ -38,10 +38,12 @@ typedef	struct		s_ray
 
 typedef	struct		s_player
 {
-	t_point			position;
-	t_ray			direction;
+	t_dpoint		position;
+	t_dpoint		dir;
 	double			angle;
-	int				speed;
+	double			speed;
+	double			planeX;
+	double			planeY;
 }					t_player;
 
 typedef struct		s_smap
