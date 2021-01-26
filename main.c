@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:41:39 by hapryl            #+#    #+#             */
-/*   Updated: 2021/01/25 20:01:13 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/01/26 18:08:37 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,6 @@
 #include "cub3d.h"
 #include <stdio.h>
 #include <stdlib.h>
-
-typedef struct  s_data {
-    void		*mlx;
-    void		*mlx_win;
-    void		*img;
-    char        *addr;
-    int         bits_per_pixel;
-    int         line_length;
-    int         endian;
-    t_player    player;
-    int	        map[10][19];
-    int         square;
-    t_settings	*settings;
-    const size_t rect_w;
-    const size_t rect_h;
-}               t_data;
 
 void            my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -116,224 +100,40 @@ int	            key_move(t_data *data, int keycode)
     }
     //Zachistka
     ft_mlx_draw_rectangle(data, 0, 0, data->settings->R1, data->settings->R2, data->settings->F);
-    //Vzor
-#pragma region Raycasting DDA with normals
-    // //which box of the map we're in
-    // int mapX = int(posX);
-    // int mapY = int(posY);
-
-    // //length of ray from current position to next x or y-side
-    // double sideDistX;
-    // double sideDistY;
-
-    // //length of ray from one x or y-side to next x or y-side
-    // double deltaDistX = std::abs(1 / rayDirX);
-    // double deltaDistY = std::abs(1 / rayDirY);
-    // double perpWallDist;
-
-    // //what direction to step in x or y-direction (either +1 or -1)
-    // int stepX;
-    // int stepY;
-
-    // int hit = 0; //was there a wall hit?
-    // int side; //was a NS or a EW wall hit?
-#pragma endregion
-#pragma region Testing Raycasting
-    // int	    mx, my, mp;
-    // float   x, y, xo, yo;
-    // double fov = M_PI/3;
-    // for (size_t i=1; i < data->settings->R1; i++) 
-    // {
-    //     double cameraX = 2 * i / data->settings->R1; //i-coordinate in camera space
-    //     double rayDirX = data->player.dir.x + data->player.planeX*cameraX;
-    //     double rayDirY = data->player.dir.y + data->player.planeY*cameraX;
-
-    //     //which box of the map we're in
-    //     int mapX = (int)data->player.position.x;
-    //     int mapY = (int)data->player.position.y;
-
-    //     //length of ray from current position to next x or y-side
-    //     double sideDistX;
-    //     double sideDistY;
-
-    //     //length of ray from one x or y-side to next x or y-side
-    //     double deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX));
-    //     double deltaDistY = sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY));
-    //     double perpWallDist;
-
-    //     //what direction to step in x or y-direction (either +1 or -1)
-    //     int stepX;
-    //     int stepY;
-
-    //     int hit = 0; //was there a wall hit?
-    //     int side; //was a NS or a EW wall hit?
-
-    //     //calculate step and initial sideDist
-    //     if (rayDirX < 0)
-    //     {
-    //     stepX = -1;
-    //     sideDistX = (data->player.position.x - mapX) * deltaDistX;
-    //     }
-    //     else
-    //     {
-    //     stepX = 1;
-    //     sideDistX = (mapX + 1.0 - data->player.position.x) * deltaDistX;
-    //     }
-    //     if (rayDirY < 0)
-    //     {
-    //     stepY = -1;
-    //     sideDistY = (data->player.position.y - mapY) * deltaDistY;
-    //     }
-    //     else
-    //     {
-    //     stepY = 1;
-    //     sideDistY = (mapY + 1.0 - data->player.position.y) * deltaDistY;
-    //     }
-
-    //         //perform DDA
-    //     while (hit == 0)
-    //     {
-    //         //jump to next map square, OR in x-direction, OR in y-direction
-    //         if (sideDistX < sideDistY)
-    //         {
-    //             sideDistX += deltaDistX;
-    //             mapX += stepX;
-    //             side = 0;
-    //         }
-    //         else
-    //         {
-    //             sideDistY += deltaDistY;
-    //             mapY += stepY;
-    //             side = 1;
-    //         }
-    //         //Check if ray has hit a wall
-    //         if (data->map[mapX][mapY] > 0) hit = 1;
-    //     }
-
-    //     //Calculate distance of perpendicular ray (Euclidean distance will give fisheye effect!)
-    //     if (side == 0) perpWallDist = (mapX - data->player.position.x + (1 - stepX) / 2) / rayDirX;
-    //     else           perpWallDist = (mapY - data->player.position.y + (1 - stepY) / 2) / rayDirY;
-
-    //     //Calculate height of line to draw on screen
-    //     int lineHeight = (int)(data->settings->R2 / perpWallDist);
-
-    //     //calculate lowest and highest pixel to fill in current stripe
-    //     int drawStart = -lineHeight / 2 + data->settings->R2 / 2;
-    //     if(drawStart < 0) drawStart = 0;
-    //     int drawEnd = lineHeight / 2 + data->settings->R2 / 2;
-    //     if(drawEnd >= data->settings->R2) drawEnd = data->settings->R2 - 1;
-    //     printf("lineH = %d\n", lineHeight);
-    //     ft_mlx_draw_rectangle(data, i, drawStart, i, drawEnd, 0x00FFFFFF);
-    // }
-
-#pragma endregion
     //Map
     ft_mlx_draw_map(data);
+    //Vzor
 #pragma region Working Raycasting 
     double	rx, ry, x, y, xo, yo, dist;
     double  fov = M_PI/3;
-    int	    wallH = 1000;
-    //Horizontal
+    int	    wallH = 0;
+
+
     for (size_t i=0; i < data->settings->R1; i++) 
     {
         float angle = data->player.angle - fov / 2 + fov * i / data->settings->R1;
-
+        if (angle < 0)
+            angle += 2 * M_PI;
+        if (angle > 2 * M_PI)
+            angle -= 2 * M_PI;
+        wallH = 0;
+        double distH, distV;
         int dof = 0;
-        double	aTan = -1/tan(angle);
-        if (angle > M_PI)
+        unsigned int color = 0x006358ab;
+        
+        distH = fabs(get_Horizontal_dist(data, angle));
+        distV = fabs(get_Vertical_dist(data, angle));
+        if (distV < distH)
         {
-            ry = (int)data->player.position.y - 0.0001;
-            rx = (data->player.position.y - ry) * aTan + data->player.position.x;
-            yo = -1;
-            xo = -yo*aTan;
+            distH = distV;
+            color = 0x004520ab;
         }
-        if (angle < M_PI)
-        {
-            ry = (int)data->player.position.y + 1;
-            rx = (data->player.position.y - ry) * aTan + data->player.position.x;
-            yo = 1;
-            xo = -yo*aTan;
-        }
-        if (angle == M_PI_2 || angle == 3 * M_PI_2)
-        {
-            rx = data->player.position.x;
-            ry = data->player.position.y;
-            dof = 8;
-        }
-        while (dof < 8)
-        {
-            x = rx;
-            y = ry;
-            if (x < 0 || x > 19 || y > 10 || y < 0)
-                break;
-            if (data->map[(int)y][(int)x] == 1)
-            {
-                dist = fabs(x - data->player.position.x) / cos(angle);
-                wallH = data->settings->R2 / (dist * cos(data->player.angle - angle));
-                break;
-            }
-            else
-            {
-                rx += xo;
-                ry += yo;
-                dof++;
-            }
-        }
-        //Vertical
-        dof = 0;
-        double	nTan = -tan(angle), rx2, ry2;
-        if (angle > M_PI_2 && angle < 3 * M_PI_2)
-        {
-            rx2 = (int)data->player.position.x - 0.0001;
-            ry2 = (data->player.position.x - rx2) * nTan + data->player.position.y;
-            xo = -1;
-            yo = -xo*nTan;
-        }
-        if (angle < M_PI_2 ||angle > 3 * M_PI_2)
-        {
-            rx2 = (int)data->player.position.x + 1;
-            ry2 = (data->player.position.x - rx2) * nTan + data->player.position.y;
-            xo = 1;
-            yo = -xo*nTan;
-        }
-        if (angle == 0 || angle == M_PI)
-        {
-            rx2 = data->player.position.x;
-            ry2 = data->player.position.y;
-            dof = 8;
-        }
-        while (dof < 8)
-        {
-            x = rx2;
-            y = ry2;
-            if (x < 0 || x > 19 || y > 10 || y < 0)
-                break;
-            if (data->map[(int)y][(int)x] == 1)
-            {
-                if (fabs(y - data->player.position.y) / sin(angle) < dist)
-                {
-                    dist = fabs(y - data->player.position.y) / sin(angle);
-                    wallH = data->settings->R2 / (dist * cos(data->player.angle - angle));
-                }
-                else
-                {
-                    x = rx;
-                    y = ry;
-                }
-                if (x < 19 && x > 0 && y < 10 && y > 0)
-                    my_mlx_pixel_put(data, x * data->square, y * data->square, 0x0000FF00);
-                break;
-            }
-            else
-            {
-                rx2 += xo;
-                ry2 += yo;
-                dof++;
-            }
-        }
+        wallH = data->settings->R2 / (distH * cos(data->player.angle - angle));
+        
+        wallH = abs(wallH);
             if (wallH > data->settings->R2)
                 wallH = data->settings->R2;
-        ft_mlx_draw_rectangle(data, i, data->settings->R2/2 - wallH/2, i, data->settings->R2/2 + wallH/2, 0x00FFFFFF);
+        ft_mlx_draw_rectangle(data, i, data->settings->R2/2 - wallH/2, i, data->settings->R2/2 + wallH/2, color);
         
         // for (float c = 0; c < 20; c+=.005)
         // {
@@ -402,7 +202,7 @@ int             main(void)
     data.square = 25;
     data.player.position.x = 10;
     data.player.position.y = 5;
-    data.player.angle = 0;
+    data.player.angle = 3 * M_PI / 2;
     data.player.dir.x = 0.5;
     data.player.dir.y = 0.5;
     data.player.planeX = 0;
