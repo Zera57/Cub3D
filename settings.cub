@@ -1,12 +1,12 @@
 R 1920 1080
-NO ./path_to_the_north_texture
-SO ./path_to_the_south_texture
-WE ./path_to_the_west_texture
-EA ./path_to_the_east_texture
+NO textures/Cobblestone.xpm
+SO textures/Furnace.xpm
+WE textures/Oak_Planks.xpm
+EA textures/Oak_Log.xpm
 
 S ./path_to_the_sprite_texture
 F 0,0,0
-C 225,30,0
+C 43, 165, 240s
 
         1111111111111111111111111
         1000000000110000000000001

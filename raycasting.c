@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 15:53:53 by hapryl            #+#    #+#             */
-/*   Updated: 2021/01/26 17:36:50 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/01/28 15:00:35 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ double get_Vertical_dist(t_data *data, double angle)
 		o.x = 1;
 		o.y = -o.x*nTan;
 	}
-	if (angle == 0 || angle == M_PI)
+	if (angle == M_PI_2 || angle == 3 * M_PI_2)
 	{
 		r.x = data->player.position.x;
 		r.y = data->player.position.y;

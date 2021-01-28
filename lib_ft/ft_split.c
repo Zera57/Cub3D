@@ -6,13 +6,13 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 15:21:10 by hapryl            #+#    #+#             */
-/*   Updated: 2020/11/10 20:53:56 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/01/28 18:59:42 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static	void	*free_arr(char **s)
+void	*ft_free(char **s)
 {
 	int		i;
 
@@ -81,7 +81,7 @@ char			**ft_split(char const *s, char c)
 			while (*s == c && *s)
 				s++;
 			if (!(result[i] = get_word(s, c)))
-				return (free_arr(result));
+				return (ft_free(result));
 			i++;
 		}
 		s++;

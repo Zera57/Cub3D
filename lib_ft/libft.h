@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/10 17:05:30 by hapryl            #+#    #+#             */
-/*   Updated: 2021/01/17 15:32:12 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/01/28 19:00:19 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int					ft_isalnum(int c);
 int					ft_isprint(int c);
 int					ft_tolower(int c);
 int					ft_toupper(int c);
+void				*ft_free(char **s);
 
 void				*ft_calloc(size_t count, size_t size);
 char				*ft_strdup(const char *s1);

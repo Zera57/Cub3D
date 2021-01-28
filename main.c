@@ -6,11 +6,10 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:41:39 by hapryl            #+#    #+#             */
-/*   Updated: 2021/01/26 18:08:37 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/01/28 17:51:37 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minilibx_mms_20200219/mlx.h"
 #include "cub3d.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,7 +18,7 @@ void            my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
     char    *dst;
 
-    dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+    dst = data->img.addr + (y * data->img.line_length + x * (data->img.bits_per_pixel / 8));
     *(unsigned int*)dst = color;
 }
 
@@ -98,8 +97,10 @@ int	            key_move(t_data *data, int keycode)
         data->player.position.x = data->player.position.x + data->player.speed * cos(data->player.angle);
         data->player.position.y = data->player.position.y + data->player.speed * sin(data->player.angle);
     }
-    //Zachistka
-    ft_mlx_draw_rectangle(data, 0, 0, data->settings->R1, data->settings->R2, data->settings->F);
+    //Ceiling
+    ft_mlx_draw_rectangle(data, 0, 0, data->settings->R1, data->settings->R2/2, data->settings->C);
+    //Floor
+    ft_mlx_draw_rectangle(data, 0, data->settings->R2/2+1, data->settings->R1, data->settings->R2, data->settings->F);
     //Map
     ft_mlx_draw_map(data);
     //Vzor
@@ -153,7 +154,7 @@ int	            key_move(t_data *data, int keycode)
 #pragma endregion
     //Player
     ft_mlx_draw_rectangle(data, data->player.position.x * data->square - 5, data->player.position.y * data->square - 5, data->player.position.x * data->square + 5, data->player.position.y * data->square + 5, 0x00FF0000);
-    mlx_put_image_to_window(data->mlx, data->mlx_win, data->img, 0, 0);
+    mlx_put_image_to_window(data->mlx, data->mlx_win, data->img.img, 0, 0);
     return (0);
 }
 
@@ -195,7 +196,7 @@ int             main(void)
 
 
     data.settings = get_settings("/Users/hapryl/Desktop/Projects/cub3d/my_git/settings.cub");
-    //ft_lstiter(data.settings->map, &f);
+    ft_lstiter(data.settings->map, &f);
     for (int y = 0; y < 10; y++)
         for (int x = 0; x < 19; x++)
             data.map[y][x] = map[y][x];
@@ -210,9 +211,9 @@ int             main(void)
     data.player.speed = 0.1;
     data.mlx = mlx_init();
     data.mlx_win = mlx_new_window(data.mlx, data.settings->R1, data.settings->R2, "Hello world!");
-    data.img = mlx_new_image(data.mlx, data.settings->R1, data.settings->R2);
-    data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length,
-                                 &data.endian);
+    data.img.img = mlx_new_image(data.mlx, data.settings->R1, data.settings->R2);
+    data.img.addr = mlx_get_data_addr(data.img.img, &data.img.bits_per_pixel, &data.img.line_length,
+                                 &data.img.endian);
     mlx_hook(data.mlx_win, 2, 1L<<0, key_hook, &data);
     mlx_loop(data.mlx);
 	return (0);
