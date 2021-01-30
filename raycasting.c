@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 15:53:53 by hapryl            #+#    #+#             */
-/*   Updated: 2021/01/28 15:00:35 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/01/30 14:16:38 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_dpoint get_distance(t_data *data, t_dpoint r, t_dpoint o, double angle)
 	int	dof;
 
 	dof = 0;
-	while (dof < data->settings->R1)
+	while (dof < data->settings.R1)
 	{
 		if (r.x < 0 || r.x > 19 || r.y > 10 || r.y < 0)
 			break;

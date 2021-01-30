@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 19:36:34 by hapryl            #+#    #+#             */
-/*   Updated: 2021/01/28 18:08:48 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/01/30 13:28:04 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,17 +95,17 @@ typedef struct		s_data {
     t_player		player;
     int				map[10][19];
     int				square;
-    t_settings		*settings;
+    t_settings		settings;
     const size_t	rect_w;
     const size_t	rect_h;
 }					t_data;
 
 void				my_mlx_pixel_put(t_data *data, int x, int y, int color);
-void				parser_R(t_settings *settings, char *line);
-void				parser_RFC(t_settings *settings, char *line);
-void				parser_map(t_settings *settings, char *line);
-void				parser_textures(t_settings *settings, char *line);
-t_settings			*get_settings(char	*path);
+void				parser_R(t_data *data, char *line);
+void				parser_RFC(t_data *data, char *line);
+void				parser_map(t_data *data, char *line);
+void				parser_textures(t_data *data, char *line);
+void				get_settings(t_data *data, char	*path);
 double				get_Horizontal_dist(t_data *data, double angle);
 double				get_Vertical_dist(t_data *data, double angle);
 void				error(char *str);

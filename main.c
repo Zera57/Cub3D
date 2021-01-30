@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:41:39 by hapryl            #+#    #+#             */
-/*   Updated: 2021/01/28 17:51:37 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/01/30 15:22:29 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,9 @@ int	            key_move(t_data *data, int keycode)
         data->player.position.y = data->player.position.y + data->player.speed * sin(data->player.angle);
     }
     //Ceiling
-    ft_mlx_draw_rectangle(data, 0, 0, data->settings->R1, data->settings->R2/2, data->settings->C);
+    ft_mlx_draw_rectangle(data, 0, 0, data->settings.R1, data->settings.R2/2, data->settings.C);
     //Floor
-    ft_mlx_draw_rectangle(data, 0, data->settings->R2/2+1, data->settings->R1, data->settings->R2, data->settings->F);
+    ft_mlx_draw_rectangle(data, 0, data->settings.R2/2+1, data->settings.R1, data->settings.R2, data->settings.F);
     //Map
     ft_mlx_draw_map(data);
     //Vzor
@@ -110,10 +110,10 @@ int	            key_move(t_data *data, int keycode)
     int	    wallH = 0;
 
 
-    for (size_t i=0; i < data->settings->R1; i++) 
+    for (size_t i=0; i < data->settings.R1; i++) 
     {
-        float angle = data->player.angle - fov / 2 + fov * i / data->settings->R1;
-        if (angle < 0)
+        float angle = data->player.angle - fov / 2 + fov * i / data->settings.R1;
+        if (angle <= 0)
             angle += 2 * M_PI;
         if (angle > 2 * M_PI)
             angle -= 2 * M_PI;
@@ -129,12 +129,13 @@ int	            key_move(t_data *data, int keycode)
             distH = distV;
             color = 0x004520ab;
         }
-        wallH = data->settings->R2 / (distH * cos(data->player.angle - angle));
+        wallH = data->settings.R2 / (distH * cos(data->player.angle - angle));
         
         wallH = abs(wallH);
-            if (wallH > data->settings->R2)
-                wallH = data->settings->R2;
-        ft_mlx_draw_rectangle(data, i, data->settings->R2/2 - wallH/2, i, data->settings->R2/2 + wallH/2, color);
+            if (wallH > data->settings.R2)
+                wallH = data->settings.R2;
+        printf("%d\n", wallH);
+        ft_mlx_draw_rectangle(data, i, data->settings.R2/2 - wallH/2, i, data->settings.R2/2 + wallH/2, color);
         
         // for (float c = 0; c < 20; c+=.005)
         // {
@@ -143,9 +144,9 @@ int	            key_move(t_data *data, int keycode)
             
         //     if (data->map[(int)(y)][(int)(x)] != 0)
         //     {
-        //         int wallH = data->settings->R2 / (c * cos(data->player.angle - angle));
-        //         if (wallH > data->settings->R2) wallH = data->settings->R2;
-        //         ft_mlx_draw_rectangle(data, i, data->settings->R2/2 - wallH/2, i, data->settings->R2/2 + wallH/2, 0x00FFFFFF);            
+        //         int wallH = data->settings.R2 / (c * cos(data->player.angle - angle));
+        //         if (wallH > data->settings.R2) wallH = data->settings.R2;
+        //         ft_mlx_draw_rectangle(data, i, data->settings.R2/2 - wallH/2, i, data->settings.R2/2 + wallH/2, 0x00FFFFFF);            
         //         break;
         //     }
         //     my_mlx_pixel_put(data, x * data->square, y * data->square, 0x0000FF00);
@@ -153,7 +154,7 @@ int	            key_move(t_data *data, int keycode)
     }
 #pragma endregion
     //Player
-    ft_mlx_draw_rectangle(data, data->player.position.x * data->square - 5, data->player.position.y * data->square - 5, data->player.position.x * data->square + 5, data->player.position.y * data->square + 5, 0x00FF0000);
+    ft_mlx_draw_rectangle(data, data->player.position.x * data->square - data->square/5, data->player.position.y * data->square - data->square/5, data->player.position.x * data->square + 5, data->player.position.y * data->square + 5, 0x00FF0000);
     mlx_put_image_to_window(data->mlx, data->mlx_win, data->img.img, 0, 0);
     return (0);
 }
@@ -194,26 +195,26 @@ int             main(void)
                                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
                                 };
 
+    data.mlx = mlx_init();
+    get_settings(&data, "/Users/hapryl/Desktop/Projects/cub3d/my_git/settings.cub");
+    data.mlx_win = mlx_new_window(data.mlx, data.settings.R1, data.settings.R2, "Hello world!");
+    data.img.img = mlx_new_image(data.mlx, data.settings.R1, data.settings.R2);
+    data.img.addr = mlx_get_data_addr(data.img.img, &data.img.bits_per_pixel, &data.img.line_length,
+                                 &data.img.endian);
 
-    data.settings = get_settings("/Users/hapryl/Desktop/Projects/cub3d/my_git/settings.cub");
-    ft_lstiter(data.settings->map, &f);
+    //ft_lstiter(data.settings.map, &f);
     for (int y = 0; y < 10; y++)
         for (int x = 0; x < 19; x++)
             data.map[y][x] = map[y][x];
-    data.square = 25;
+    data.square = 10;
     data.player.position.x = 10;
     data.player.position.y = 5;
-    data.player.angle = 3 * M_PI / 2;
+    data.player.angle = M_PI * 2;
     data.player.dir.x = 0.5;
     data.player.dir.y = 0.5;
     data.player.planeX = 0;
     data.player.planeY = 0.66;
-    data.player.speed = 0.1;
-    data.mlx = mlx_init();
-    data.mlx_win = mlx_new_window(data.mlx, data.settings->R1, data.settings->R2, "Hello world!");
-    data.img.img = mlx_new_image(data.mlx, data.settings->R1, data.settings->R2);
-    data.img.addr = mlx_get_data_addr(data.img.img, &data.img.bits_per_pixel, &data.img.line_length,
-                                 &data.img.endian);
+    data.player.speed = 0.5;
     mlx_hook(data.mlx_win, 2, 1L<<0, key_hook, &data);
     mlx_loop(data.mlx);
 	return (0);
