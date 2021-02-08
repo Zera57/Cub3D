@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 19:36:34 by hapryl            #+#    #+#             */
-/*   Updated: 2021/01/30 13:28:04 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/08 17:48:44 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 # define CUB3D_H
 
 # include "gnl/get_next_line.h"
-#include "minilibx_mms_20200219/mlx.h"
+# include "minilibx_mms_20200219/mlx.h"
 # include <math.h>
+# include <stdio.h>
+
 
 typedef	struct		s_point
 {
@@ -60,25 +62,19 @@ typedef struct		s_img
     int         	bits_per_pixel;
     int         	line_length;
     int         	endian;
-}					t_img;
-
-typedef	struct		s_texture
-{
-	void			*img;
 	int				width;
 	int				height;
-}					t_texture;
-
+}					t_img;
 
 typedef	struct		s_settings
 {
 	int				R1;
 	int				R2;
-	void			*NO;
-	void			*SO;
-	void			*WE;
-	void			*EA;
-	void			*S;
+	char			*NO;
+	char			*SO;
+	char			*WE;
+	char			*EA;
+	char			*S;
 	int				F;
 	int				C;
 	t_list			*map;
@@ -91,7 +87,7 @@ typedef struct		s_data {
     void			*mlx;
     void			*mlx_win;
 	t_img			img;
-	t_texture		textures[4];
+	t_img			textures[4];
     t_player		player;
     int				map[10][19];
     int				square;
