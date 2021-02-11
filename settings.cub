@@ -6,7 +6,7 @@ EA textures/Oak_Log.xpm
 
 S ./path_to_the_sprite_texture
 F 0,0,0
-C 43, 165, 240s
+C 43, 165, 240
 
         1111111111111111111111111
         1000000000110000000000001

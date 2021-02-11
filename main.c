@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:41:39 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/08 18:51:41 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/10 17:16:26 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,18 @@ void            my_mlx_pixel_put(t_data *data, int x, int y, int color)
     char    *dst;
 
     dst = data->img.addr + (y * data->img.line_length + x * (data->img.bits_per_pixel / 8));
-    *(unsigned int*)dst = color;
+    if (x >= 0 && y >= 0 && x <= data->settings.R1 && y <= data->settings.R2)
+		*(unsigned int*)dst = color;
 }
 
-int            my_mlx_get_color(t_img *img, int x, int y)
+unsigned int	my_mlx_get_color(t_img *img, int x, int y)
 {
-    char    *dst;
+	unsigned int	color;
 
-    dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
-    return (*(unsigned int*)dst);
+	color = 0x008a66e5;
+    if (x >= 0 && y >= 0 && x <= img->width && y <= img->height)
+    	color = *(unsigned int*)(img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8)));
+    return (color);
 }
 
 void            ft_mlx_draw_rectangle(t_data *data, int x1, int y1, int x2, int y2, int color)
@@ -52,16 +55,41 @@ void            ft_mlx_draw_rectangle(t_data *data, int x1, int y1, int x2, int 
 void            ft_mlx_draw_wall(t_data *data, int x, int wallH, char c)
 {
 	int				y;
+	int				id_texture;
+    double			x_texture;
 	double			y_texture;
 	double			yo;
     unsigned int	color;
 
     y = 0;
 	y_texture = 0;
-	yo = 128 / wallH;
+    if (c == 'n')
+	{
+        x_texture = ((int)data->wall_point.x % data->bit) / ((double)data->bit / (double)data->textures[0].width);
+		id_texture = 0;
+		yo = (double)data->textures[0].height / wallH;
+	}
+	if (c == 's')
+	{
+        x_texture = ((int)data->wall_point.x % data->bit) / ((double)data->bit / (double)data->textures[1].width);
+		id_texture = 1;
+		yo = (double)data->textures[1].height / wallH;
+	}
+	if (c == 'w')
+    {
+		x_texture = ((int)data->wall_point.y % data->bit) / ((double)data->bit / (double)data->textures[2].width);
+		id_texture = 2;
+		yo = (double)data->textures[2].height / wallH;
+	}
+	if (c == 'e')
+    {
+		x_texture = ((int)data->wall_point.y % data->bit) / ((double)data->bit / (double)data->textures[3].width);
+		id_texture = 3;
+		yo = (double)data->textures[3].height / wallH;
+	}
 	while (y <= wallH)
     {
-		color = my_mlx_get_color(&data->textures[0], 1, (int)y_texture);
+        color = my_mlx_get_color(&data->textures[id_texture], (int)x_texture, (int)y_texture);
         my_mlx_pixel_put(data, x, y + data->settings.R2/2 - wallH/2, color);
         y++;
 		y_texture += yo; 
@@ -105,18 +133,18 @@ int	            key_move(t_data *data, int keycode)
     {
         double x = data->player.position.x - data->player.speed * cos(data->player.angle);
         double y = data->player.position.y - data->player.speed * sin(data->player.angle);
-        if (data->map[(int)(data->player.position.y /128)][(int)x/128] != 1)
+        if (data->map[(int)(data->player.position.y /data->bit)][(int)x/data->bit] != 1)
             data->player.position.x = x;
-        if (data->map[(int)y/128][(int)data->player.position.x/128] != 1)
+        if (data->map[(int)y/data->bit][(int)data->player.position.x/data->bit] != 1)
             data->player.position.y = y;
     }
     else if (keycode == 126)
     {
         double x = data->player.position.x + data->player.speed * cos(data->player.angle);
         double y = data->player.position.y + data->player.speed * sin(data->player.angle);
-        if (data->map[(int)data->player.position.y/128][(int)x/128] != 1)
+        if (data->map[(int)data->player.position.y/data->bit][(int)x/data->bit] != 1)
             data->player.position.x = x;
-        if (data->map[(int)y/128][(int)data->player.position.x/128] != 1)
+        if (data->map[(int)y/data->bit][(int)data->player.position.x/data->bit] != 1)
             data->player.position.y = y;
     }
     //Ceiling
@@ -142,25 +170,31 @@ int	            key_move(t_data *data, int keycode)
         wallH = 0;
         double distH, distV;
         int dof = 0;
-        unsigned int color = 0x006358ab;
-        
+        unsigned int    color = 0x006358ab;
+        char            side ;
+	
+		if (angle > M_PI)
+			side = 'n';
+		else
+			side = 's';
         distH = fabs(get_Horizontal_dist(data, angle));
-        printf("distH %f\n", distH);
         distV = fabs(get_Vertical_dist(data, angle));
-        printf("distV %f\n", distV);
         if (distV < distH)
         {
+			if (angle < M_PI / 2 || angle > M_PI * 3 / 2)
+            	side = 'e';
+			else
+				side = 'w';
             distH = distV;
             color = 0x004520ab;
         }
-        wallH = data->settings.R2 / (distH / 128 * cos(data->player.angle - angle));
+        wallH = data->settings.R2 / (distH / data->bit * cos(data->player.angle - angle));
         
         wallH = abs(wallH);
-            if (wallH > data->settings.R2)
-                wallH = data->settings.R2;
-        printf("wallH %d\n", wallH);
+		// if (wallH > data->settings.R2)
+		// 	wallH = data->settings.R2;
         
-		ft_mlx_draw_wall(data, i, wallH, 'n');
+		ft_mlx_draw_wall(data, i, wallH, side);
 		
 		//ft_mlx_draw_rectangle(data, i, data->settings.R2/2 - wallH/2, i, data->settings.R2/2 + wallH/2, color);
         
@@ -181,7 +215,7 @@ int	            key_move(t_data *data, int keycode)
     }
 #pragma endregion
     //Player
-    ft_mlx_draw_rectangle(data, data->player.position.x /128 * data->square - data->square/5, data->player.position.y /128 * data->square - data->square/5, data->player.position.x /128 * data->square + 5, data->player.position.y /128 * data->square + 5, 0x00FF0000);
+    ft_mlx_draw_rectangle(data, data->player.position.x /data->bit * data->square - data->square/5, data->player.position.y /data->bit * data->square - data->square/5, data->player.position.x /data->bit * data->square + 5, data->player.position.y /data->bit * data->square + 5, 0x00FF0000);
     mlx_put_image_to_window(data->mlx, data->mlx_win, data->img.img, 0, 0);
     return (0);
 }
@@ -236,20 +270,25 @@ int             main(void)
 	printf("EA\t%s\n", data.settings.EA);
 	printf("s\t%s\n", data.settings.S);
     mlx_put_image_to_window(data.mlx, data.mlx_win, data.textures[0].img, 0, 0);
+    mlx_put_image_to_window(data.mlx, data.mlx_win, data.textures[1].img, data.textures[0].width, 0);
+    mlx_put_image_to_window(data.mlx, data.mlx_win, data.textures[2].img, data.textures[1].width, 0);
+    mlx_put_image_to_window(data.mlx, data.mlx_win, data.textures[3].img, data.textures[2].width, 0);
+
 
     //ft_lstiter(data.settings.map, &f);
     for (int y = 0; y < 10; y++)
         for (int x = 0; x < 19; x++)
             data.map[y][x] = map[y][x];
     data.square = 10;
-    data.player.position.x = 10*128;
-    data.player.position.y = 5*128;
+	data.bit = 256;
+    data.player.position.x = 10 * data.bit;
+    data.player.position.y = 5 * data.bit;
     data.player.angle = M_PI / 2;
     data.player.dir.x = 0.5;
     data.player.dir.y = 0.5;
     data.player.planeX = 0;
     data.player.planeY = 0.66;
-    data.player.speed = 0.1 * 128;
+    data.player.speed = 0.1 * data.bit;
     mlx_hook(data.mlx_win, 2, 1L<<0, key_hook, &data);
     mlx_loop(data.mlx);
     //key_move(&data, 0);
