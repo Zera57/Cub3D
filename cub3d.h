@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 19:36:34 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/16 19:09:06 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/18 20:04:38 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,8 @@ void				set_WE_texture(t_data *data, char **values);
 void				set_EA_texture(t_data *data, char **values);
 void				set_S_texture(t_data *data, char **values);
 void				set_map(t_data *data);
+
+void				validate_map(t_data *data, int x_p, int y_p);
 
 void				get_settings(t_data *data, char	*path);
 double				get_Horizontal_dist(t_data *data, double angle);

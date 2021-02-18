@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:41:39 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/18 15:40:04 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/18 20:05:07 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ void            ft_mlx_draw_sprites(t_data *data)
 	}
 }
 
-void		ft_sort_sprites(t_data *data)
+void			ft_sort_sprites(t_data *data)
 {
 	int		i;
 	t_list	*temp1;
@@ -184,19 +184,19 @@ void		ft_sort_sprites(t_data *data)
 	}
 }
 
-int	            ft_mlx_draw_map(t_data *data)
+int				ft_mlx_draw_map(t_data *data)
 {
-	int y = 0;
+	int x, y = 0;
 
 	while (y < data->map.height)
 	{
-		int x = 0;
-		while (x < data->map.width)
+		x = 0;
+		while (data->map.map[y][x] != '\0')
 		{
 			if (data->map.map[y][x] == '1')
-				ft_mlx_draw_rectangle(data, x * data->square, y * data->square, x * data->square + data->square, y * data->square + data->square, 0x000000FF);
+			{	ft_mlx_draw_rectangle(data, x * data->square, y * data->square, x * data->square + data->square, y * data->square + data->square, 0x000000FF);	}
 			if (data->map.map[y][x] == '2')
-				ft_mlx_draw_rectangle(data, x * data->square, y * data->square, x * data->square + data->square, y * data->square + data->square, 0x00e4d720);
+			{	ft_mlx_draw_rectangle(data, x * data->square, y * data->square, x * data->square + data->square, y * data->square + data->square, 0x00e4d720);	}
 			x++;
 		}
 		y++;
@@ -206,6 +206,7 @@ int	            ft_mlx_draw_map(t_data *data)
 
 int	            key_move(t_data *data, int keycode)
 {
+	double	x, y;
 	int     delta_x, delta_y;
 	if (keycode == 123)
 	{
@@ -221,21 +222,20 @@ int	            key_move(t_data *data, int keycode)
 	}
 	else if (keycode == 125)
 	{
-		double x = data->player.position.x - data->player.speed * cos(data->player.angle);
-		double y = data->player.position.y - data->player.speed * sin(data->player.angle);
-		if (data->map.map[(int)(data->player.position.y /data->bit)][(int)x/data->bit] == '0')
+		x = data->player.position.x - data->player.speed * cos(data->player.angle);
+		y = data->player.position.y - data->player.speed * sin(data->player.angle);
+		if (data->map.map[(int)(data->player.position.y /data->bit)][(int)x/data->bit] != '1')
 			data->player.position.x = x;
-		if (data->map.map[(int)y/data->bit][(int)data->player.position.x/data->bit] == '0')
+		if (data->map.map[(int)y/data->bit][(int)data->player.position.x/data->bit] != '1')
 			data->player.position.y = y;
 	}
 	else if (keycode == 126)
 	{
-		double cos = cos(data->player.angle);
-		double x = data->player.position.x + data->player.speed * cos(data->player.angle);
-		double y = data->player.position.y + data->player.speed * sin(data->player.angle);
-		if (data->map.map[(int)data->player.position.y/data->bit][(int)x/data->bit] == '0')
+		x = data->player.position.x + data->player.speed * cos(data->player.angle);
+		y = data->player.position.y + data->player.speed * sin(data->player.angle);
+		if (data->map.map[(int)(data->player.position.y/data->bit)][(int)(x/data->bit)] != '1')
 			data->player.position.x = x;
-		if (data->map.map[(int)y/data->bit][(int)data->player.position.x/data->bit] == '0')
+		if (data->map.map[(int)(y/data->bit)][(int)(data->player.position.x/data->bit)] != '1')
 			data->player.position.y = y;
 	}
 	//Ceiling
@@ -246,7 +246,7 @@ int	            key_move(t_data *data, int keycode)
 	ft_mlx_draw_map(data);
 	//Vzor
 #pragma region Working Raycasting 
-	double	rx, ry, x, y, xo, yo, dist;
+	double	rx, ry, xo, yo, dist;
 	int	    wallH = 0;
 
 
@@ -405,6 +405,7 @@ int             main(void)
 			}
 			if (data.map.map[y][x] == 'N' || data.map.map[y][x] == 'S' || data.map.map[y][x] == 'W' || data.map.map[y][x] == 'E')
 			{
+				validate_map(&data, x, y);
 				data.player.position.x = (x + 0.5) * data.bit;
 				data.player.position.y = (y + 0.5) * data.bit;
 			}
