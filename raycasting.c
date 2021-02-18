@@ -6,26 +6,40 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 15:53:53 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/10 14:02:36 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/18 14:59:12 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-t_dpoint get_distance(t_data *data, t_dpoint r, t_dpoint o, double angle)
+void		set_sprite(t_data *data, double x, double y, double angle)
+{
+	double	*dist;
+	if (data->list_s == NULL)
+		data->list_s = ft_lstnew(dist);
+	else
+		ft_lstadd_front(&data->list_s, ft_lstnew(dist));
+	*(double*)data->list_s->content = data->settings.R1 / (fabs(fabs(x - data->player.position.x) / cos(angle)) / data->bit);
+}
+
+t_dpoint	get_distance(t_data *data, t_dpoint r, t_dpoint o, double angle)
 {
 	int	dof;
 
 	dof = 0;
 	while (dof < data->settings.R1)
 	{
-		if (r.x/data->bit < 0 || r.x/data->bit > 19 || r.y/data->bit > 10 || r.y/data->bit < 0)
+		if (r.x/data->bit < 0 || r.x/data->bit > data->map.width || r.y/data->bit > data->map.height || r.y/data->bit < 0)
 			break;
-		if (data->map[(int)(r.y / data->bit)][(int)(r.x / data->bit)] == 1)
+		if (data->map.map[(int)(r.y / data->bit)][(int)(r.x / data->bit)] == '1')
 		{
 			my_mlx_pixel_put(data, r.x * data->square / data->bit, r.y * data->square / data->bit, 0x0000FF00);
 			return (r);
 		}
+		// else if (data->map.map[(int)(r.y / data->bit)][(int)(r.x / data->bit)] == 2)
+		// {
+
+		// }
 		else
 		{
 			r.x += o.x;

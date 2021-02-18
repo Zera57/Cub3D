@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 19:36:34 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/11 12:19:20 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/16 19:09:06 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,25 +29,26 @@ typedef	struct		s_dpoint
 {
 	double			x;
 	double			y;
+	double			dist;
 }					t_dpoint;
-
-typedef	struct		s_ray
-{
-	double			x1;
-	double			y2;
-	double			x3;
-	double			y4;
-}					t_ray;
 
 typedef	struct		s_player
 {
 	t_dpoint		position;
 	t_dpoint		dir;
+	double			fov;
 	double			angle;
 	double			speed;
 	double			planeX;
 	double			planeY;
 }					t_player;
+
+typedef	struct		s_map
+{
+    char			**map;
+	int				width;
+	int				height;
+}					t_map;
 
 typedef struct		s_smap
 {
@@ -70,11 +71,6 @@ typedef	struct		s_settings
 {
 	int				R1;
 	int				R2;
-	char			*NO;
-	char			*SO;
-	char			*WE;
-	char			*EA;
-	char			*S;
 	int				F;
 	int				C;
 	t_list			*map;
@@ -88,9 +84,12 @@ typedef struct		s_data {
     void			*mlx_win;
 	t_img			img;
 	t_img			textures[4];
-    t_player		player;
+	t_img			sprite;
+	t_list			*list_s;
+	t_player		player;
+    t_map			map;
 	t_dpoint		wall_point;
-    int				map[10][19];
+	double			*rays;
     int				square;
 	int				bit;
     t_settings		settings;
@@ -109,6 +108,8 @@ void				set_NO_texture(t_data *data, char **values);
 void				set_SO_texture(t_data *data, char **values);
 void				set_WE_texture(t_data *data, char **values);
 void				set_EA_texture(t_data *data, char **values);
+void				set_S_texture(t_data *data, char **values);
+void				set_map(t_data *data);
 
 void				get_settings(t_data *data, char	*path);
 double				get_Horizontal_dist(t_data *data, double angle);

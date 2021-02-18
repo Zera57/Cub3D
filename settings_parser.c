@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 13:58:55 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/10 17:00:25 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/16 14:56:53 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,21 @@
 
 void	parser_R(t_data *data, char *line)
 {
+	int		R1;
+	int		R2;
 	char	**values;
 
 	values = ft_split(line, ' ');
-
-	data->settings.R1 = ft_atoi(values[0]);
-	data->settings.R2 = ft_atoi(values[1]);
+	R1 = ft_atoi(values[0]);
+	R2 = ft_atoi(values[1]);
+	if (R1 < 1 || R2 < 1)
+		error("Resolution is invalid it's must be greater than 0");
+	if (R1 > 2560)
+		R1 = 2560;
+	if (R2 > 1440)
+		R2 = 1440;
+	data->settings.R1 = R1;
+	data->settings.R2 = R2;
 }
 
 void	parser_RFC(t_data *data, char *line)
@@ -46,6 +55,9 @@ void	parser_RFC(t_data *data, char *line)
 	}
 	else
 	{
+		int i = 0;
+		while (values[i])
+			printf("%s", values[i++]);
 		ft_free(values);
 		error("Not valid R or F or C");
 	}
@@ -88,6 +100,6 @@ void	parser_textures(t_data *data, char *line)
 	}
 	else if (ft_strlen(values[0]) == 1 && values[2] == NULL)
 		if (values[0][0] == 'S')
-			ft_strlcpy(	data->settings.S, values[1], 0);
+			set_S_texture(data, values);
 	ft_free(values);
 }

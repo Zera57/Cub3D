@@ -1,28 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   s_parser.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/01 17:17:49 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/18 15:10:50 by hapryl           ###   ########.fr       */
+/*   Created: 2021/02/12 13:30:53 by hapryl            #+#    #+#             */
+/*   Updated: 2021/02/16 15:03:04 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "cub3d.h"
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+void				set_S_texture(t_data *data, char **values)
 {
-	size_t	i;
-	size_t	len;
-
-	i = src ? ft_strlen(src) : 0;
-	if (dst && size)
-	{
-		len = (i > size) ? (size - 1) : i;
-		ft_memcpy(dst, src, len);
-		dst[len] = '\0';
-	}
-	return (i);
+	if (!(data->sprite.img = mlx_xpm_file_to_image(data->mlx, values[1], &data->sprite.width, &data->sprite.height)))
+		error("Can't find sprite texture");
+	data->sprite.addr = mlx_get_data_addr(data->sprite.img, &data->sprite.bits_per_pixel, &data->sprite.line_length, &data->textures[0].endian);
 }
