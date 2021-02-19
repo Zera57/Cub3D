@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 19:36:34 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/18 20:04:38 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/19 19:47:37 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef	struct		s_dpoint
 	double			x;
 	double			y;
 	double			dist;
+	double			angle;
 }					t_dpoint;
 
 typedef	struct		s_player
@@ -45,7 +46,7 @@ typedef	struct		s_player
 
 typedef	struct		s_map
 {
-    char			**map;
+	char			**map;
 	int				width;
 	int				height;
 }					t_map;
@@ -58,11 +59,11 @@ typedef struct		s_smap
 
 typedef struct		s_img
 {
-    void			*img;
-    char        	*addr;
-    int         	bits_per_pixel;
-    int         	line_length;
-    int         	endian;
+	void			*img;
+	char        	*addr;
+	int         	bits_per_pixel;
+	int         	line_length;
+	int         	endian;
 	int				width;
 	int				height;
 }					t_img;
@@ -80,27 +81,27 @@ typedef	struct		s_settings
 }					t_settings;
 
 typedef struct		s_data {
-    void			*mlx;
-    void			*mlx_win;
+	void			*mlx;
+	void			*mlx_win;
 	t_img			img;
 	t_img			textures[4];
 	t_img			sprite;
 	t_list			*list_s;
 	t_player		player;
-    t_map			map;
+	t_map			map;
 	t_dpoint		wall_point;
 	double			*rays;
-    int				square;
+	int				square;
 	int				bit;
-    t_settings		settings;
-    const size_t	rect_w;
-    const size_t	rect_h;
+	t_settings		settings;
+	const size_t	rect_w;
+	const size_t	rect_h;
 }					t_data;
 
 void				my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 void				parser_R(t_data *data, char *line);
-void				parser_RFC(t_data *data, char *line);
+void				parser_FC(t_data *data, char *line);
 void				parser_map(t_data *data, char *line);
 void				parser_textures(t_data *data, char *line);
 
@@ -111,11 +112,23 @@ void				set_EA_texture(t_data *data, char **values);
 void				set_S_texture(t_data *data, char **values);
 void				set_map(t_data *data);
 
+void				objects_init(t_data *data);
 void				validate_map(t_data *data, int x_p, int y_p);
 
 void				get_settings(t_data *data, char	*path);
 double				get_Horizontal_dist(t_data *data, double angle);
 double				get_Vertical_dist(t_data *data, double angle);
 void				error(char *str);
+
+void				key_w(t_data *data);
+void				key_a(t_data *data);
+void				key_s(t_data *data);
+void				key_d(t_data *data);
+void				key_r(t_data *data);
+void				key_l(t_data *data);
+
+void				my_mlx_pixel_put(t_data *data, int x, int y, int color);
+unsigned int		my_mlx_get_color(t_img *img, int x, int y);
+void				ft_mlx_draw_rectangle(t_data *data, int x1, int y1, int x2, int y2, int color);
 
 #endif

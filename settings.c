@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 13:06:39 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/16 19:05:53 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/19 19:48:25 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@
 
 void			set_parametr(t_data *data, char *line)
 {
-	if (line[0] == 'R' || line[0] == 'F' || line[0] == 'C')
-		parser_RFC(data, line);
+	if (line[0] == 'R')
+		parser_R(data, line);
+	else if (line[0] == 'F' || line[0] == 'C')
+		parser_FC(data, line);
 	else if (line[0] == 'N' || line[0] == 'S' || line[0] == 'W' || line[0] == 'E')
 		parser_textures(data, line);
 	else if (line[0] == '\0')

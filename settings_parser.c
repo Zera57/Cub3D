@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 13:58:55 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/16 14:56:53 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/19 19:47:30 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,21 +29,19 @@ void	parser_R(t_data *data, char *line)
 		R2 = 1440;
 	data->settings.R1 = R1;
 	data->settings.R2 = R2;
+	data->bit = data->settings.R1;
+	if (!(data->rays = malloc(sizeof(double) * data->settings.R1)))
+		error("Malloc ne videlil");
 }
 
-void	parser_RFC(t_data *data, char *line)
+void	parser_FC(t_data *data, char *line)
 {
 	char	**values;
 	char	arg[2] = {' ', ','};
 	int		color;
 
 	values = ft_split_arg(line, arg);
-	if (line[0] == 'R' && values[2] == NULL)
-	{
-		data->settings.R1 = ft_atoi(values[0]);
-		data->settings.R2 = ft_atoi(values[1]);
-	}
-	else if (values[3] == NULL)
+	if (values[3] == NULL)
 	{
 		color = ft_atoi(values[0]) << 16;
 		color += ft_atoi(values[1]) << 8;

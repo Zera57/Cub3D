@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 17:57:24 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/18 20:06:34 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/19 17:03:06 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void		set_map(t_data *data)
 		error("Hasn't map");
 	height = ft_lstsize(temp);
 	data->map.height = height;
+	data->map.width = 0;
 	if (!(data->map.map = malloc(sizeof(int*) * height)))
 		error("Malloc ne videlil");
 	while (temp)
@@ -61,7 +62,7 @@ int		test_map(t_data *data, char **map, int x, int y)
 		map[y][x] = '1';
 	else
 		return (0);
-	if (y - 1 < 0 || x - 1 < 0 || data->map.height < y + 1 || data->map.width < x + 1)
+	if (y - 1 < 0 || x - 1 < 0 || data->map.height <= y + 1 || data->map.width <= x + 1)
 	{
 		ft_draw_map(data, map);
 		return (1);
