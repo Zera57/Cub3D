@@ -1,23 +1,17 @@
 R 1920 1080
-NO ./textures/fon1.xpm
-SO ./textures/fon2.xpm
-WE ./textures/fon3.xpm
-EA ./textures/fon4.xpm
+NO ./textures/Cobblestone.xpm
+SO ./textures/Furnace.xpm
+WE ./textures/Oak_Log.xpm
+EA ./textures/Oak_Planks.xpm
 
 S ./textures/silverhand.xpm
 F 31, 36, 39
 C 43, 165, 240
 
-111  11111111
-121  10000021
-101  10111111
-101  101
-101  101
-1011110111111
-100000N000001
-1111110111101
-     101  101
-     101  101
-11111101  101
-12000001  121
-11111111  111
+11111
+12221
+10W01
+12221     11111111111111
+11111     11111111111111
+          22222222222222
+          22222222222222

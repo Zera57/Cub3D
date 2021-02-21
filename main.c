@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:41:39 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/19 19:41:57 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/21 17:44:18 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,7 +254,6 @@ int	            key_esc(t_data *data)
 
 int             key_hook(int keycode, t_data *img)
 {
-	//printf("%d", keycode);
 	if ((keycode != 53))
 		key_move(img, keycode);
 	if (keycode == 53)
@@ -277,12 +276,14 @@ void tester_parsing(t_data *data)
 	error("All good");
 }
 
-int             main(void)
+int             main(int arg, char **argv)
 {
 	t_data      data;
 
 	data.mlx = mlx_init();
-	get_settings(&data, "/Users/hapryl/Desktop/Projects/cub3d/my_git/settings.cub");
+	if (arg == 3 && ft_strncmp("screenshot", argv[2], 11))
+		make_screenshot(&data);
+	get_settings(&data, argv[0]);
 	data.mlx_win = mlx_new_window(data.mlx, data.settings.R1, data.settings.R2, "Hello world!");
 	data.img.img = mlx_new_image(data.mlx, data.settings.R1, data.settings.R2);
 	data.img.addr = mlx_get_data_addr(data.img.img, &data.img.bits_per_pixel, &data.img.line_length,

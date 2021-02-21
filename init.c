@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 18:56:01 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/19 19:28:35 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/21 16:31:25 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,15 @@ void	player_init(t_data *data, t_point p, char c)
 	data->player.position.x = (p.x + 0.5) * data->bit;
 	data->player.position.y = (p.y + 0.5) * data->bit;
 	data->player.fov = M_PI/3;
-	data->player.dir.x = 0.5;
-	data->player.dir.y = 0.5;
-	data->player.planeX = 0;
-	data->player.planeY = 0.66;
 	data->player.speed = 0.2 * data->bit;
 	if (c == 'N')
 		data->player.angle = M_PI * 3 / 2;
 	if (c == 'S')
 		data->player.angle = M_PI / 2;
 	if (c == 'W')
-		data->player.angle = 0;
-	if (c == 'E')
 		data->player.angle = M_PI;
+	if (c == 'E')
+		data->player.angle = 0;
 }
 
 void	objects_init(t_data *data)
@@ -38,10 +34,11 @@ void	objects_init(t_data *data)
 	t_point p;
 	
 	p.y = 0;
+	ft_draw_map(data, data->map.map);
 	while(p.y < data->map.height)
 	{
 		p.x = 0;
-		while(p.x < data->map.width)
+		while(data->map.map[p.y][p.x] != '\0')
 		{
 			if (data->map.map[p.y][p.x] == '2')
 			{

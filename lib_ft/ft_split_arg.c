@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 15:21:10 by hapryl            #+#    #+#             */
-/*   Updated: 2021/01/17 17:03:36 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/21 13:59:47 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char			**ft_split_arg(char const *s, char *c)
 	i = 0;
 	while (*s && count_words(s, c) != 0)
 	{
-		if (ft_strchr(c, *s) || (i == 0 && ft_strchr(c, s[0])))
+		if (ft_strchr(c, *s) || (i == 0 && !ft_strchr(c, s[0])))
 		{
 			while (*s && ft_strchr(c, *s))
 				s++;

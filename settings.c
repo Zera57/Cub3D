@@ -6,15 +6,11 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 13:06:39 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/19 19:48:25 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/21 17:29:39 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gnl/get_next_line.h"
-#include <fcntl.h>
 #include "cub3d.h"
-#include <unistd.h>
-#include <errno.h>
 
 void			set_parametr(t_data *data, char *line)
 {

@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 13:58:55 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/19 19:47:30 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/21 14:00:34 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	parser_R(t_data *data, char *line)
 	char	**values;
 
 	values = ft_split(line, ' ');
-	R1 = ft_atoi(values[0]);
-	R2 = ft_atoi(values[1]);
+	R1 = ft_atoi(values[1]);
+	R2 = ft_atoi(values[2]);
 	if (R1 < 1 || R2 < 1)
 		error("Resolution is invalid it's must be greater than 0");
 	if (R1 > 2560)
@@ -32,6 +32,7 @@ void	parser_R(t_data *data, char *line)
 	data->bit = data->settings.R1;
 	if (!(data->rays = malloc(sizeof(double) * data->settings.R1)))
 		error("Malloc ne videlil");
+	ft_free(values);
 }
 
 void	parser_FC(t_data *data, char *line)
@@ -41,11 +42,11 @@ void	parser_FC(t_data *data, char *line)
 	int		color;
 
 	values = ft_split_arg(line, arg);
-	if (values[3] == NULL)
+	if (values[4] == NULL)
 	{
-		color = ft_atoi(values[0]) << 16;
-		color += ft_atoi(values[1]) << 8;
-		color += ft_atoi(values[2]);
+		color = ft_atoi(values[1]) << 16;
+		color += ft_atoi(values[2]) << 8;
+		color += ft_atoi(values[3]);
 		if (line[0] == 'F')
 			data->settings.F = color;
 		else if (line[0] == 'C')

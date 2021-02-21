@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 19:36:34 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/19 19:47:37 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/21 17:43:51 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # include "gnl/get_next_line.h"
 # include "minilibx_mms_20200219/mlx.h"
+# include <unistd.h>
+# include <errno.h>
+# include <fcntl.h>
 # include <math.h>
 # include <stdio.h>
 
@@ -36,12 +39,9 @@ typedef	struct		s_dpoint
 typedef	struct		s_player
 {
 	t_dpoint		position;
-	t_dpoint		dir;
 	double			fov;
 	double			angle;
 	double			speed;
-	double			planeX;
-	double			planeY;
 }					t_player;
 
 typedef	struct		s_map
@@ -130,5 +130,9 @@ void				key_l(t_data *data);
 void				my_mlx_pixel_put(t_data *data, int x, int y, int color);
 unsigned int		my_mlx_get_color(t_img *img, int x, int y);
 void				ft_mlx_draw_rectangle(t_data *data, int x1, int y1, int x2, int y2, int color);
+
+void				make_screenshot(t_data *data);
+
+int				ft_draw_map(t_data *data, char **map);
 
 #endif

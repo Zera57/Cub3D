@@ -6,12 +6,11 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 15:16:24 by hapryl            #+#    #+#             */
-/*   Updated: 2021/01/17 18:51:54 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/21 13:59:48 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
 int	ft_atoi(const char *str)
 {
