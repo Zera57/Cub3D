@@ -4,13 +4,13 @@ SO ./textures/Furnace.xpm
 WE ./textures/Oak_Log.xpm
 EA ./textures/Oak_Planks.xpm
 
-S ./textures/silverhand.xpm
+S ./textures/enderman.xpm
 F 31, 36, 39
 C 43, 165, 240
 
 11111
 12221
-10W01
+10N01
 12221     11111111111111
 11111     11111111111111
           22222222222222

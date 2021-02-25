@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 18:56:01 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/21 16:31:25 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/25 18:49:25 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 void	player_init(t_data *data, t_point p, char c)
 {
 	validate_map(data, p.x, p.y);
-	data->player.position.x = (p.x + 0.5) * data->bit;
-	data->player.position.y = (p.y + 0.5) * data->bit;
+	data->player.position.x = (double)((double)p.x + 0.5) * (double)data->bit;
+	data->player.position.y = (double)((double)p.y + 0.5) * (double)data->bit;
 	data->player.fov = M_PI/3;
 	data->player.speed = 0.2 * data->bit;
 	if (c == 'N')
@@ -34,7 +34,6 @@ void	objects_init(t_data *data)
 	t_point p;
 	
 	p.y = 0;
-	ft_draw_map(data, data->map.map);
 	while(p.y < data->map.height)
 	{
 		p.x = 0;

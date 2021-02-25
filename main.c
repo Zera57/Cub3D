@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:41:39 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/21 17:44:18 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/25 18:46:20 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,25 @@ void            ft_mlx_draw_picture(t_data *data, t_point start, t_dpoint offset
 {
 	double			x_texture;
 	double			y_texture;
+	double			y_texture_temp;
 	int				y_temp;
 	unsigned int	color;
 
 	x_texture = 0;
-	y_temp = start.y;
+	y_texture = 0;
 	if (start.y < 0)
 	{
-		y_texture = (offset.y * wallH / 2) - (offset.y * data->settings.R2 / 2);
 		start.y = 0;
+		y_texture = (offset.y * wallH / 2) - (offset.y * data->settings.R2 / 2);
 	}
+	y_temp = start.y;
+	y_texture_temp = y_texture;
 	while (data->sprite.width > x_texture)
 	{
 		if (data->rays[start.x] > dist)
 		{
 			start.y = y_temp;
-			y_texture = 0;
+			y_texture = y_texture_temp;
 			while (start.y <= data->settings.R2 && data->sprite.height > y_texture)
 			{
 				color = my_mlx_get_color(&data->sprite, (int)x_texture, (int)y_texture);
@@ -196,8 +199,6 @@ int	            key_move(t_data *data, int keycode)
 	ft_mlx_draw_rectangle(data, 0, 0, data->settings.R1, data->settings.R2/2, data->settings.C);
 	//Floor
 	ft_mlx_draw_rectangle(data, 0, data->settings.R2/2+1, data->settings.R1, data->settings.R2, data->settings.F);
-	//Map
-	ft_mlx_draw_map(data);
 	//Vzor
 #pragma region Working Raycasting 
 	double	rx, ry, xo, yo, dist;
@@ -240,6 +241,8 @@ int	            key_move(t_data *data, int keycode)
 #pragma endregion
 	//Sprites
 	ft_mlx_draw_sprites(data);
+	//Map
+	ft_mlx_draw_map(data);
 	//Player
 	ft_mlx_draw_rectangle(data, data->player.position.x /data->bit * data->square - data->square/5, data->player.position.y /data->bit * data->square - data->square/5, data->player.position.x /data->bit * data->square + 5, data->player.position.y /data->bit * data->square + 5, 0x00FF0000);
 	mlx_put_image_to_window(data->mlx, data->mlx_win, data->img.img, 0, 0);
@@ -281,9 +284,7 @@ int             main(int arg, char **argv)
 	t_data      data;
 
 	data.mlx = mlx_init();
-	if (arg == 3 && ft_strncmp("screenshot", argv[2], 11))
-		make_screenshot(&data);
-	get_settings(&data, argv[0]);
+	get_settings(&data, argv[1]);
 	data.mlx_win = mlx_new_window(data.mlx, data.settings.R1, data.settings.R2, "Hello world!");
 	data.img.img = mlx_new_image(data.mlx, data.settings.R1, data.settings.R2);
 	data.img.addr = mlx_get_data_addr(data.img.img, &data.img.bits_per_pixel, &data.img.line_length,
@@ -299,10 +300,12 @@ int             main(int arg, char **argv)
 	// tester_parsing(&data);
 #pragma endregion
 
-	data.square = 10;
+	data.square = 30;
 	objects_init(&data);
 
-	//key_move(&data, 0);
+	key_move(&data, -1);
+	if (arg == 3 && (ft_strncmp("screenshot", argv[2], 11)) == 0)
+		make_screenshot(&data);
 	mlx_hook(data.mlx_win, 2, 1L<<0, key_hook, &data);
 	mlx_loop(data.mlx);
 	return (0);

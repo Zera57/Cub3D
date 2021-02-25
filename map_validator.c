@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 17:57:24 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/21 15:24:28 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/25 18:49:29 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ int				ft_draw_map(t_data *data, char **map)
 
 int		test_map(t_data *data, char **map, int x, int y)
 {
-	// ft_draw_map(data, map);
-
 	if (map[y][x] != '1')
 		map[y][x] = '1';
 	else
