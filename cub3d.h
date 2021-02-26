@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 19:36:34 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/25 17:52:23 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/25 18:56:44 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef	struct		s_dpoint
 
 typedef	struct		s_player
 {
+	int				count;
 	t_dpoint		position;
 	double			fov;
 	double			angle;
@@ -78,7 +79,17 @@ typedef	struct		s_settings
 	int				size_x;
 	int				size_y;
 	unsigned char	has_all;
-}					t_settings;
+	unsigned char	flags;
+	}					t_settings;
+		//flags
+		// 1 Resolution
+		// 2 NO
+		// 3 SO
+		// 4 WE
+		// 5 EA
+		// 6 S
+		// 7 F
+		// 8 C
 
 typedef struct		s_data {
 	void			*mlx;

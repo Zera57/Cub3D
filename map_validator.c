@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 17:57:24 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/25 18:49:29 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/25 20:01:17 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void		set_map(t_data *data)
 		ft_strlcpy(data->map.map[i], (char*)temp->content, width);
 		data->settings.map = temp;
 		temp = temp->next;
-		free(data->settings.map);
+		ft_lstdelone(data->settings.map, free);
 		i++;
 	}
 }
@@ -94,6 +94,8 @@ void		validate_map(t_data *data, int x_p, int y_p)
 		test[y][x] = '\0';
 		y++;
 	}
+	test[y] = NULL;
 	if (test_map(data, test, x_p, y_p) != 0)
 		error("Not valid map");
+	ft_free(test);
 }

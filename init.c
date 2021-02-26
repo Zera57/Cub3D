@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 18:56:01 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/25 18:49:25 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/25 19:00:46 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	player_init(t_data *data, t_point p, char c)
 {
+	if (++data->player.count > 1)
+		error("Two players in map");
 	validate_map(data, p.x, p.y);
 	data->player.position.x = (double)((double)p.x + 0.5) * (double)data->bit;
 	data->player.position.y = (double)((double)p.y + 0.5) * (double)data->bit;
@@ -34,6 +36,7 @@ void	objects_init(t_data *data)
 	t_point p;
 	
 	p.y = 0;
+	data->player.count = 0;
 	while(p.y < data->map.height)
 	{
 		p.x = 0;
@@ -55,4 +58,6 @@ void	objects_init(t_data *data)
 		}
 		p.y++;
 	}
+	if (data->player.count != 1)
+		error("Has no player coordinates");
 }

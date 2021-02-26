@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:41:39 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/25 18:46:20 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/25 19:34:32 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,15 +290,7 @@ int             main(int arg, char **argv)
 	data.img.addr = mlx_get_data_addr(data.img.img, &data.img.bits_per_pixel, &data.img.line_length,
 								&data.img.endian);
 
-#pragma region Test parsing
-	// mlx_put_image_to_window(data.mlx, data.mlx_win, data.textures[0].img, 0, 0);
-	// mlx_put_image_to_window(data.mlx, data.mlx_win, data.textures[1].img, 0, 64);
-	// mlx_put_image_to_window(data.mlx, data.mlx_win, data.textures[2].img, 0, 128);
-	// mlx_put_image_to_window(data.mlx, data.mlx_win, data.textures[3].img, 0, 192);
-	// mlx_put_image_to_window(data.mlx, data.mlx_win, data.sprite.img, data.settings.R1 / 2, 0);
-
 	// tester_parsing(&data);
-#pragma endregion
 
 	data.square = 30;
 	objects_init(&data);

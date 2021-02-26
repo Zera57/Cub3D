@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 13:06:39 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/21 17:29:39 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/25 20:05:40 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ void			set_parametr(t_data *data, char *line)
 	else if (line[0] == 'N' || line[0] == 'S' || line[0] == 'W' || line[0] == 'E')
 		parser_textures(data, line);
 	else if (line[0] == '\0')
+	{
+		free(line);
 		return;
+	}
 	else 
 		parser_map(data, line);
 }
@@ -39,5 +42,7 @@ void			get_settings(t_data *data, char	*path)
 	while (get_next_line(fd, &line))
 		set_parametr(data, line);
 	set_parametr(data, line);
+	if (data->settings.flags != 0b11111111)
+		error("You don't have enough parametrs");
 	set_map(data);
 }
