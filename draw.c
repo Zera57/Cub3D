@@ -3,136 +3,95 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zera <zera@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/25 23:12:32 by zera              #+#    #+#             */
-/*   Updated: 2021/02/25 23:19:14 by zera             ###   ########.fr       */
+/*   Updated: 2021/02/26 15:46:56 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int				ft_mlx_draw_map(t_data *data)
+void	ft_mlx_draw_stripe(t_all *all, t_dpoint p1, t_dpoint p2, int id)
 {
-	int x, y = 0;
+	unsigned int	color;
+	double			yo;
+	int				wallh;
 
-	while (y < data->map.height)
+	wallh = p1.y;
+	p1.y = all->settings.r2 / 2 - wallh / 2;
+	p2.y = 0;
+	p2.x *= (double)all->textures[id].width;
+	yo = (double)all->textures[id].height / wallh;
+	if (p1.y < 0)
 	{
-		x = 0;
-		while (data->map.map[y][x] != '\0')
-		{
-			if (data->map.map[y][x] == '1')
-			{	ft_mlx_draw_rectangle(data, x * data->square, y * data->square, x * data->square + data->square, y * data->square + data->square, 0x000000FF);	}
-			if (data->map.map[y][x] == '2')
-			{	ft_mlx_draw_rectangle(data, x * data->square, y * data->square, x * data->square + data->square, y * data->square + data->square, 0x00e4d720);	}
-			x++;
-		}
-		y++;
+		p2.y = (yo * wallh / 2) - (yo * all->settings.r2 / 2);
+		p1.y = 0;
 	}
-	return (0);
+	while (p1.y < all->settings.r2 && p2.y < all->textures[id].height)
+	{
+		color = my_mlx_get_color(&all->textures[id], (int)p2.x, (int)p2.y);
+		my_mlx_pixel_put(all, p1.x, p1.y, color);
+		p1.y++;
+		p2.y += yo;
+	}
 }
 
-void	ft_mlx_draw_wall(t_data *data, int x, int wallH, char c)
+void	ft_mlx_draw_wall(t_all *all, int x, int wallh, char c)
 {
-	int				y;
-	int				id_texture;
-	double			x_texture;
-	double			y_texture;
-	double			yo;
-	unsigned int	color;
+	int				id;
+	t_dpoint		p2;
 
-	y = data->settings.R2 / 2 - wallH/2;
-	y_texture = 0;
 	if (c == 'n')
 	{
-		x_texture = ((int)data->wall_point.x % data->bit) / ((double)data->bit / (double)data->textures[0].width);
-		id_texture = 0;
-		yo = (double)data->textures[0].height / wallH;
+		p2.x = ((int)all->wall_point.x % all->bit) / ((double)all->bit);
+		id = 0;
 	}
 	if (c == 's')
 	{
-		x_texture = ((int)data->wall_point.x % data->bit) / ((double)data->bit / (double)data->textures[1].width);
-		id_texture = 1;
-		yo = (double)data->textures[1].height / wallH;
+		p2.x = ((int)all->wall_point.x % all->bit) / ((double)all->bit);
+		id = 1;
 	}
 	if (c == 'w')
 	{
-		x_texture = ((int)data->wall_point.y % data->bit) / ((double)data->bit / (double)data->textures[2].width);
-		id_texture = 2;
-		yo = (double)data->textures[2].height / wallH;
+		p2.x = ((int)all->wall_point.y % all->bit) / ((double)all->bit);
+		id = 2;
 	}
 	if (c == 'e')
 	{
-		x_texture = ((int)data->wall_point.y % data->bit) / ((double)data->bit / (double)data->textures[3].width);
-		id_texture = 3;
-		yo = (double)data->textures[3].height / wallH;
+		p2.x = ((int)all->wall_point.y % all->bit) / ((double)all->bit);
+		id = 3;
 	}
-	if (y < 0)
-	{
-		y_texture = (yo * wallH / 2) - (yo * data->settings.R2 / 2);
-		y = 0;
-	}
-	while (y < data->settings.R2 && y_texture < data->textures[id_texture].height)
-	{
-		color = my_mlx_get_color(&data->textures[id_texture], (int)x_texture, (int)y_texture);
-		my_mlx_pixel_put(data, x, y, color);
-		y++;
-		y_texture += yo; 
-	}
+	ft_mlx_draw_stripe(all, (t_dpoint){x, wallh}, p2, id);
 }
 
-void	ft_mlx_draw_walls(t_data *data)
+void	ft_mlx_draw_walls(t_all *all)
 {
-	double	rx, ry, xo, yo, dist;
-	int	    wallH = 0;
+	double	angle;
+	t_point	wallh;
+	int		i;
 
-	for (size_t i=0; i < data->settings.R1; i++) 
+	i = 0;
+	while (i < all->settings.r1)
 	{
-		float angle = data->player.angle - data->player.fov / 2 + data->player.fov * i / data->settings.R1;
+		angle = all->player.angle - all->player.fov / 2
+					+ all->player.fov * i / all->settings.r1;
 		if (angle <= 0)
 			angle += 2 * M_PI;
 		if (angle > 2 * M_PI)
 			angle -= 2 * M_PI;
-		wallH = 0;
-		double distH, distV;
-		int dof = 0;
-		char            side ;
-	
-		if (angle > M_PI)
-			side = 'n';
-		else
-			side = 's';
-		distH = fabs(get_Horizontal_dist(data, angle));
-		distV = fabs(get_Vertical_dist(data, angle));
-		if (distV < distH)
-		{
-			if (angle < M_PI / 2 || angle > M_PI * 3 / 2)
-				side = 'e';
-			else
-				side = 'w';
-			distH = distV;
-		}
-		data->rays[i] = distH;
-		wallH = data->settings.R2 / (distH / data->bit * cos(data->player.angle - angle));
-
-		wallH = abs(wallH);
-		
-		ft_mlx_draw_wall(data, i, wallH, side);
+		wallh = get_wallh(all, angle, i);
+		ft_mlx_draw_wall(all, i, wallh.x, wallh.y);
+		i++;
 	}
 }
 
-void	draw(t_data *data)
+void	draw(t_all *all)
 {
-	//Ceiling
-	ft_mlx_draw_rectangle(data, 0, 0, data->settings.R1, data->settings.R2/2, data->settings.C);
-	//Floor
-	ft_mlx_draw_rectangle(data, 0, data->settings.R2/2+1, data->settings.R1, data->settings.R2, data->settings.F);
-	//Vzor
-	ft_mlx_draw_walls(data);
-	//Sprites
-	ft_mlx_draw_sprites(data);
-	//Map
-	ft_mlx_draw_map(data);
-	//Player
-	ft_mlx_draw_rectangle(data, data->player.position.x /data->bit * data->square - data->square/5, data->player.position.y /data->bit * data->square - data->square/5, data->player.position.x /data->bit * data->square + 5, data->player.position.y /data->bit * data->square + 5, 0x00FF0000);
+	ft_mlx_draw_rectangle(all, (t_point){0, 0}, (t_point){all->settings.r1,
+									all->settings.r2 / 2}, all->settings.c);
+	ft_mlx_draw_rectangle(all, (t_point){0, all->settings.r2 / 2 + 1},
+			(t_point){all->settings.r1, all->settings.r2}, all->settings.f);
+	ft_mlx_draw_walls(all);
+	ft_mlx_draw_sprites(all);
 }

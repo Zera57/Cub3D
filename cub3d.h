@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 19:36:34 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/25 18:56:44 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/26 15:47:44 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <fcntl.h>
 # include <math.h>
 # include <stdio.h>
-
 
 typedef	struct		s_point
 {
@@ -61,37 +60,28 @@ typedef struct		s_smap
 typedef struct		s_img
 {
 	void			*img;
-	char        	*addr;
-	int         	bits_per_pixel;
-	int         	line_length;
-	int         	endian;
+	char			*addr;
+	int				bits_per_pixel;
+	int				line_length;
+	int				endian;
 	int				width;
 	int				height;
 }					t_img;
 
 typedef	struct		s_settings
 {
-	int				R1;
-	int				R2;
-	int				F;
-	int				C;
+	int				r1;
+	int				r2;
+	int				f;
+	int				c;
 	t_list			*map;
 	int				size_x;
 	int				size_y;
 	unsigned char	has_all;
 	unsigned char	flags;
-	}					t_settings;
-		//flags
-		// 1 Resolution
-		// 2 NO
-		// 3 SO
-		// 4 WE
-		// 5 EA
-		// 6 S
-		// 7 F
-		// 8 C
+}					t_settings;
 
-typedef struct		s_data {
+typedef struct		s_all {
 	void			*mlx;
 	void			*mlx_win;
 	t_img			img;
@@ -107,43 +97,47 @@ typedef struct		s_data {
 	t_settings		settings;
 	const size_t	rect_w;
 	const size_t	rect_h;
-}					t_data;
+}					t_all;
 
-void				my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void				my_mlx_pixel_put(t_all *all, int x, int y, int color);
 
-void				parser_R(t_data *data, char *line);
-void				parser_FC(t_data *data, char *line);
-void				parser_map(t_data *data, char *line);
-void				parser_textures(t_data *data, char *line);
+void				parser_r(t_all *all, char *line);
+void				parser_fc(t_all *all, char *line);
+void				parser_map(t_all *all, char *line);
+void				parser_textures(t_all *all, char *line);
 
-void				set_NO_texture(t_data *data, char **values);
-void				set_SO_texture(t_data *data, char **values);
-void				set_WE_texture(t_data *data, char **values);
-void				set_EA_texture(t_data *data, char **values);
-void				set_S_texture(t_data *data, char **values);
-void				set_map(t_data *data);
+void				set_no_texture(t_all *all, char **values);
+void				set_so_texture(t_all *all, char **values);
+void				set_we_texture(t_all *all, char **values);
+void				set_ea_texture(t_all *all, char **values);
+void				set_s_texture(t_all *all, char **values);
+void				set_map(t_all *all);
 
-void				objects_init(t_data *data);
-void				validate_map(t_data *data, int x_p, int y_p);
+void				objects_init(t_all *all);
+void				validate_map(t_all *all, int x_p, int y_p);
 
-void				get_settings(t_data *data, char	*path);
-double				get_Horizontal_dist(t_data *data, double angle);
-double				get_Vertical_dist(t_data *data, double angle);
+void				get_settings(t_all *all, char	*path);
+double				get_horizontal_dist(t_all *all, double angle);
+double				get_vertical_dist(t_all *all, double angle);
+t_point				get_wallh(t_all *all, double angle, int i);
 void				error(char *str);
 
-void				key_w(t_data *data);
-void				key_a(t_data *data);
-void				key_s(t_data *data);
-void				key_d(t_data *data);
-void				key_r(t_data *data);
-void				key_l(t_data *data);
+void				key_w(t_all *all);
+void				key_a(t_all *all);
+void				key_s(t_all *all);
+void				key_d(t_all *all);
+void				key_r(t_all *all);
+void				key_l(t_all *all);
 
-void				my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void				my_mlx_pixel_put(t_all *all, int x, int y, int color);
 unsigned int		my_mlx_get_color(t_img *img, int x, int y);
-void				ft_mlx_draw_rectangle(t_data *data, int x1, int y1, int x2, int y2, int color);
+void				ft_mlx_draw_rectangle(t_all *all, t_point p1,
+											t_point p2, int color);
+void				ft_mlx_draw_sprites(t_all *all);
+void				draw(t_all *all);
 
-void				make_screenshot(t_data *data);
+void				make_screenshot(t_all *all);
 
-int				ft_draw_map(t_data *data, char **map);
+int					ft_draw_map(t_all *all, char **map);
 
 #endif

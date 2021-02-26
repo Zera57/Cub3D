@@ -6,40 +6,24 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 15:53:53 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/18 19:10:41 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/26 15:44:22 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void		set_sprite(t_data *data, double x, double y, double angle)
-{
-	double	*dist;
-	if (data->list_s == NULL)
-		data->list_s = ft_lstnew(dist);
-	else
-		ft_lstadd_front(&data->list_s, ft_lstnew(dist));
-	*(double*)data->list_s->content = data->settings.R1 / (fabs(fabs(x - data->player.position.x) / cos(angle)) / data->bit);
-}
-
-t_dpoint	get_distance(t_data *data, t_dpoint r, t_dpoint o, double angle)
+t_dpoint	get_distance(t_all *all, t_dpoint r, t_dpoint o, double angle)
 {
 	int	dof;
 
 	dof = 0;
-	while (dof < data->map.width + data->map.height)
+	while (dof < all->map.width + all->map.height)
 	{
-		if (r.x/data->bit < 0 || r.x/data->bit >= data->map.width || r.y/data->bit >= data->map.height || r.y/data->bit < 0)
-			break;
-		if (data->map.map[(int)(r.y / data->bit)][(int)(r.x / data->bit)] == '1')
-		{
-			my_mlx_pixel_put(data, r.x * data->square / data->bit, r.y * data->square / data->bit, 0x0000FF00);
+		if (r.x / all->bit < 0 || r.x / all->bit >= all->map.width ||
+				r.y / all->bit >= all->map.height || r.y / all->bit < 0)
+			break ;
+		if (all->map.map[(int)(r.y / all->bit)][(int)(r.x / all->bit)] == '1')
 			return (r);
-		}
-		// else if (data->map.map[(int)(r.y / data->bit)][(int)(r.x / data->bit)] == 2)
-		// {
-
-		// }
 		else
 		{
 			r.x += o.x;
@@ -50,66 +34,86 @@ t_dpoint	get_distance(t_data *data, t_dpoint r, t_dpoint o, double angle)
 	return (r);
 }
 
-double get_Vertical_dist(t_data *data, double angle)
+double		get_vertical_dist(t_all *all, double angle)
 {
-	//Vertical
 	t_dpoint	r;
 	t_dpoint	o;
-	double	nTan = -tan(angle);
+	double		ntan;
 
+	ntan = -tan(angle);
 	if (angle > M_PI_2 && angle < 3 * M_PI_2)
 	{
-		r.x = ((int)(data->player.position.x / data->bit) * data->bit) - 0.0001;
-		r.y = (data->player.position.x - r.x) * nTan + data->player.position.y;
-		o.x = -data->bit;
-		o.y = -o.x*nTan;
+		r.x = ((int)(all->player.position.x / all->bit) * all->bit) - 0.0001;
+		r.y = (all->player.position.x - r.x) * ntan + all->player.position.y;
+		o.x = -all->bit;
+		o.y = -o.x * ntan;
 	}
-	if (angle < M_PI_2 ||angle > 3 * M_PI_2)
+	else if (angle < M_PI_2 || angle > 3 * M_PI_2)
 	{
-		r.x = ((int)(data->player.position.x / data->bit) * data->bit) + data->bit;
-		r.y = (data->player.position.x - r.x) * nTan + data->player.position.y;
-		o.x = data->bit;
-		o.y = -o.x*nTan;
+		r.x = ((int)(all->player.position.x / all->bit) * all->bit) + all->bit;
+		r.y = (all->player.position.x - r.x) * ntan + all->player.position.y;
+		o.x = all->bit;
+		o.y = -o.x * ntan;
 	}
-	if (angle == M_PI_2 || angle == 3 * M_PI_2)
-	{
-		r.x = data->player.position.x;
-		r.y = data->player.position.y;
-		return (100000);
-	}
-	r = get_distance(data, r, o, angle);
-	data->wall_point.y = r.y;
-	return (fabs(fabs(r.y - data->player.position.y) / sin(angle)));
+	else if (angle == M_PI_2 || angle == 3 * M_PI_2)
+		return (all->map.height * all->bit);
+	r = get_distance(all, r, o, angle);
+	all->wall_point.y = r.y;
+	return (fabs(fabs(r.x - all->player.position.x) / cos(angle)));
 }
 
-double get_Horizontal_dist(t_data *data, double angle)
+double		get_horizontal_dist(t_all *all, double angle)
 {
-	//Horizontal
 	t_dpoint	r;
 	t_dpoint	o;
-	double	aTan = -1/tan(angle);
+	double		atan;
 
+	atan = -1 / tan(angle);
 	if (angle > M_PI && angle < M_PI * 2)
 	{
-		r.y = ((int)(data->player.position.y / data->bit) * data->bit) - 0.0001;
-		r.x = (data->player.position.y - r.y) * aTan + data->player.position.x;
-		o.y = -data->bit;
-		o.x = -o.y * aTan;
+		r.y = ((int)(all->player.position.y / all->bit) * all->bit) - 0.0001;
+		r.x = (all->player.position.y - r.y) * atan + all->player.position.x;
+		o.y = -all->bit;
+		o.x = -o.y * atan;
 	}
-	if (angle < M_PI && angle > 0)
+	else if (angle < M_PI && angle > 0)
 	{
-		r.y = ((int)(data->player.position.y / data->bit) * data->bit) + data->bit;
-		r.x = (data->player.position.y - r.y) * aTan + data->player.position.x;
-		o.y = data->bit;
-		o.x = -o.y * aTan;
+		r.y = ((int)(all->player.position.y / all->bit) * all->bit) + all->bit;
+		r.x = (all->player.position.y - r.y) * atan + all->player.position.x;
+		o.y = all->bit;
+		o.x = -o.y * atan;
 	}
-	if (angle == M_PI * 2 || angle == M_PI || angle == 0)
+	else if (angle == M_PI * 2 || angle == M_PI || angle == 0)
+		return (all->map.height * all->bit);
+	r = get_distance(all, r, o, angle);
+	all->wall_point.x = r.x;
+	return (fabs(fabs(r.y - all->player.position.y) / sin(angle)));
+}
+
+t_point		get_wallh(t_all *all, double angle, int i)
+{
+	int		wallh;
+	double	disth;
+	double	distv;
+	char	side;
+
+	if (angle > M_PI)
+		side = 'n';
+	else
+		side = 's';
+	disth = get_horizontal_dist(all, angle);
+	distv = get_vertical_dist(all, angle);
+	if ((distv < disth && distv >= 0) || disth < 0)
 	{
-		r.x = data->player.position.x;
-		r.y = data->player.position.y;
-		return 0;
+		if (angle < M_PI / 2 || angle > M_PI * 3 / 2)
+			side = 'e';
+		else
+			side = 'w';
+		disth = distv;
 	}
-	r = get_distance(data, r, o, angle);
-	data->wall_point.x = r.x;
-	return (fabs(fabs(r.x - data->player.position.x) / cos(angle)));
+	all->rays[i] = disth;
+	wallh = all->settings.r2 / (disth / all->bit *
+						cos(all->player.angle - angle));
+	wallh = abs(wallh);
+	return ((t_point){wallh, side});
 }

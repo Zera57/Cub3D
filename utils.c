@@ -6,19 +6,21 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 19:23:37 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/19 19:25:27 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/26 15:44:22 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void			my_mlx_pixel_put(t_data *data, int x, int y, int color)
+void			my_mlx_pixel_put(t_all *all, int x, int y, int color)
 {
 	char	*dst;
 
-	if (x >= 0 && y >= 0 && x < data->settings.R1 && y < data->settings.R2 && color < 0xFF000000)
+	if (x >= 0 && y >= 0 && x < all->settings.r1 &&
+			y < all->settings.r2 && color < 0xFF000000)
 	{
-		dst = data->img.addr + (y * data->img.line_length + x * (data->img.bits_per_pixel / 8));
+		dst = all->img.addr + (y * all->img.line_length
+			+ x * (all->img.bits_per_pixel / 8));
 		*(unsigned int*)dst = color;
 	}
 }
@@ -29,22 +31,24 @@ unsigned int	my_mlx_get_color(t_img *img, int x, int y)
 
 	color = 0x008a66e5;
 	if (x >= 0 && y >= 0 && x <= img->width && y <= img->height)
-		color = *(unsigned int*)(img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8)));
+		color = *(unsigned int*)(img->addr + (y * img->line_length
+			+ x * (img->bits_per_pixel / 8)));
 	return (color);
 }
 
-void			ft_mlx_draw_rectangle(t_data *data, int x1, int y1, int x2, int y2, int color)
+void			ft_mlx_draw_rectangle(t_all *all, t_point p1,
+										t_point p2, int color)
 {
 	int		i;
 	int		j;
 
-	i = y1;
-	while (i < y2)
+	i = p1.y;
+	while (i < p2.y)
 	{
-		j = x1;
-		while (j <= x2)
+		j = p1.x;
+		while (j <= p2.x)
 		{
-			my_mlx_pixel_put(data, j, i, color);
+			my_mlx_pixel_put(all, j, i, color);
 			j++;
 		}
 		i++;
