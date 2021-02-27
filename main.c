@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:41:39 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/27 16:37:08 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/27 20:24:51 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int		main(int arg, char **argv)
 	all.square = 30;
 	objects_init(&all);
 	key_move(&all, -1);
-	if (arg == 3 && (ft_strncmp("screenshot", argv[2], 11)) == 0)
+	if (arg == 3 && (ft_strncmp("--save", argv[2], 11)) == 0)
 		make_screenshot(&all);
 	mlx_hook(all.mlx_win, 2, 1L << 0, key_hook, &all);
 	mlx_hook(all.mlx_win, 17, 1L << 17, key_esc, &all);

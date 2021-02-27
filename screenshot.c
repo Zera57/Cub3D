@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/21 16:23:09 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/27 13:14:33 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/27 19:54:52 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,5 @@ void	make_screenshot(t_all *all)
 		write(fd, all->img.addr + i * all->img.line_length,
 			all->img.bits_per_pixel / 8 * all->settings.r1);
 	close(fd);
+	exit(1);
 }
