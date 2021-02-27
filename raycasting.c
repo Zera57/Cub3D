@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 15:53:53 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/27 14:38:58 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/27 16:38:27 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ double	get_vertical_dist(t_all *all, double a)
 		o.x = all->bit;
 		o.y = -o.x * ntan;
 	}
-	else //if (a == M_PI_2 || a == 3 * M_PI_2)
+	else
 		return (all->map.height * all->bit);
 	r = get_distance(all, r, o);
 	all->wall_point.y = r.y;
@@ -83,7 +83,7 @@ double	get_horizontal_dist(t_all *all, double a)
 		o.y = all->bit;
 		o.x = -o.y * atan;
 	}
-	else //if (a == M_PI * 2 || a == M_PI || a == 0)
+	else
 		return (all->map.height * all->bit);
 	r = get_distance(all, r, o);
 	all->wall_point.x = r.x;

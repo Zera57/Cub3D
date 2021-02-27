@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 13:58:55 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/27 15:01:33 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/27 16:34:45 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,19 +49,16 @@ void	parser_fc(t_all *all, char *line)
 	values = ft_split_arg(line, (char[2]){' ', ','});
 	if (values[4] != NULL)
 		error("Not valid F or C");
+	while (values[i] != NULL)
+	{
+		if (ft_atoi(values[i]) < 0 || ft_atoi(values[i]) > 255)
+			error("Not valid F or C");
+		i++;
+	}
 	color = ft_atoi(values[1]) << 16;
 	color += ft_atoi(values[2]) << 8;
 	color += ft_atoi(values[3]);
-	if (line[0] == 'F')
-	{
-		all->settings.flags |= 0b00000010;
-		all->settings.f = color;
-	}
-	else if (line[0] == 'C')
-	{
-		all->settings.flags |= 0b00000001;
-		all->settings.c = color;
-	}
+	fc_set(all, color, line[0]);
 	ft_free(values);
 	free(line);
 }

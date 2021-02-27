@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 19:36:34 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/27 14:47:46 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/27 16:31:45 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ typedef struct		s_all {
 	const size_t	rect_h;
 }					t_all;
 
+void				fc_set(t_all *all, unsigned int color, char c);
 void				parser_r(t_all *all, char *line);
 void				parser_fc(t_all *all, char *line);
 void				parser_map(t_all *all, char *line);

@@ -1,4 +1,5 @@
-R 1920 1080
+R 1200 800
+
 NO ./textures/Cobblestone.xpm
 SO ./textures/Furnace.xpm
 WE ./textures/Oak_Log.xpm

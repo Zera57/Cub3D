@@ -6,12 +6,11 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:41:39 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/27 13:09:41 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/27 16:37:08 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include <stdlib.h>
 
 int		key_move(t_all *all, int keycode)
 {
@@ -38,12 +37,12 @@ int		key_esc(t_all *all)
 	exit(1);
 }
 
-int		key_hook(int keycode, t_all *img)
+int		key_hook(int keycode, t_all *all)
 {
 	if ((keycode != 53))
-		key_move(img, keycode);
+		key_move(all, keycode);
 	if (keycode == 53)
-		key_esc(img);
+		key_esc(all);
 	return (0);
 }
 
@@ -65,6 +64,7 @@ int		main(int arg, char **argv)
 	if (arg == 3 && (ft_strncmp("screenshot", argv[2], 11)) == 0)
 		make_screenshot(&all);
 	mlx_hook(all.mlx_win, 2, 1L << 0, key_hook, &all);
+	mlx_hook(all.mlx_win, 17, 1L << 17, key_esc, &all);
 	mlx_loop(all.mlx);
 	return (0);
 }
