@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 17:54:09 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/26 13:29:40 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/27 12:54:39 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	key_l(t_all *all)
 {
-	if (all->player.angle <= 0)
-			all->player.angle = 2*M_PI;
-		all->player.angle -= 0.05;
+	if (all->player.a <= 0)
+		all->player.a = 2 * M_PI;
+	all->player.a -= 0.05;
 }
 
 void	key_r(t_all *all)
 {
-	if (all->player.angle >= 2 * M_PI)
-		all->player.angle = 0;
-	all->player.angle += 0.05;
+	if (all->player.a >= 2 * M_PI)
+		all->player.a = 0;
+	all->player.a += 0.05;
 }

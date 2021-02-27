@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/21 16:23:09 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/26 15:44:22 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/27 13:14:33 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	make_header(t_all *all, unsigned char *head, unsigned char *headf)
 {
 	unsigned char size;
 
-	size = 14 + 40 + all->settings.r1 * all->settings.r2 * all->img.bits_per_pixel / 8;
+	size = 14 + 40 + all->settings.r1 * all->settings.r2
+							* all->img.bits_per_pixel / 8;
 	head[0] = 'B';
 	head[1] = 'M';
 	head[2] = size;
@@ -37,17 +38,15 @@ void	make_header(t_all *all, unsigned char *head, unsigned char *headf)
 	headf[12] = 1;
 	headf[14] = all->img.bits_per_pixel;
 	headf[39] = '\0';
-
-
 }
 
 void	make_screenshot(t_all *all)
 {
-	int		i;
-	int		fd;
-	char	*filename;
-	unsigned char head[14];
-	unsigned char headf[40];
+	int				i;
+	int				fd;
+	char			*filename;
+	unsigned char	head[14];
+	unsigned char	headf[40];
 
 	i = all->settings.r2;
 	filename = "screen-shot.bmp";
@@ -59,6 +58,7 @@ void	make_screenshot(t_all *all)
 	write(fd, head, 14);
 	write(fd, headf, 40);
 	while (i-- >= 0)
-		write(fd, all->img.addr + i * all->img.line_length, all->img.bits_per_pixel / 8 * all->settings.r1);
+		write(fd, all->img.addr + i * all->img.line_length,
+			all->img.bits_per_pixel / 8 * all->settings.r1);
 	close(fd);
 }

@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 13:06:39 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/26 15:46:56 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/27 15:01:48 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,24 @@ void			set_parametr(t_all *all, char *line)
 		parser_r(all, line);
 	else if (line[0] == 'F' || line[0] == 'C')
 		parser_fc(all, line);
-	else if (line[0] == 'N' || line[0] == 'S' || line[0] == 'W' || line[0] == 'E')
+	else if (line[0] == 'N' || line[0] == 'S'
+		|| line[0] == 'W' || line[0] == 'E')
 		parser_textures(all, line);
 	else if (line[0] == '\0')
 	{
 		free(line);
-		return;
+		return ;
 	}
-	else 
+	else
 		parser_map(all, line);
 }
 
-void			get_settings(t_all *all, char	*path)
+void			get_settings(t_all *all, char *path)
 {
 	int			fd;
 	char		*line;
 
+	all->settings.map = NULL;
 	all->settings.size_x = 0;
 	all->settings.size_y = 0;
 	all->settings.has_all = 0;

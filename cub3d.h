@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 19:36:34 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/26 15:47:44 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/27 14:47:46 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,11 @@
 # define CUB3D_H
 
 # include "gnl/get_next_line.h"
-# include "minilibx_mms_20200219/mlx.h"
+# include "minilibx_mms/mlx.h"
 # include <unistd.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <math.h>
-# include <stdio.h>
 
 typedef	struct		s_point
 {
@@ -27,20 +26,20 @@ typedef	struct		s_point
 	int				y;
 }					t_point;
 
-typedef	struct		s_dpoint
+typedef	struct		s_dp
 {
 	double			x;
 	double			y;
 	double			dist;
-	double			angle;
-}					t_dpoint;
+	double			a;
+}					t_dp;
 
 typedef	struct		s_player
 {
 	int				count;
-	t_dpoint		position;
+	t_dp			position;
 	double			fov;
-	double			angle;
+	double			a;
 	double			speed;
 }					t_player;
 
@@ -90,7 +89,7 @@ typedef struct		s_all {
 	t_list			*list_s;
 	t_player		player;
 	t_map			map;
-	t_dpoint		wall_point;
+	t_dp			wall_point;
 	double			*rays;
 	int				square;
 	int				bit;
@@ -98,8 +97,6 @@ typedef struct		s_all {
 	const size_t	rect_w;
 	const size_t	rect_h;
 }					t_all;
-
-void				my_mlx_pixel_put(t_all *all, int x, int y, int color);
 
 void				parser_r(t_all *all, char *line);
 void				parser_fc(t_all *all, char *line);
@@ -117,9 +114,9 @@ void				objects_init(t_all *all);
 void				validate_map(t_all *all, int x_p, int y_p);
 
 void				get_settings(t_all *all, char	*path);
-double				get_horizontal_dist(t_all *all, double angle);
-double				get_vertical_dist(t_all *all, double angle);
-t_point				get_wallh(t_all *all, double angle, int i);
+double				get_horizontal_dist(t_all *all, double a);
+double				get_vertical_dist(t_all *all, double a);
+t_point				get_wallh(t_all *all, double a, int i);
 void				error(char *str);
 
 void				key_w(t_all *all);
@@ -129,11 +126,16 @@ void				key_d(t_all *all);
 void				key_r(t_all *all);
 void				key_l(t_all *all);
 
-void				my_mlx_pixel_put(t_all *all, int x, int y, int color);
+void				my_mlx_pixel_put(t_all *all, int x, int y, unsigned int color);
 unsigned int		my_mlx_get_color(t_img *img, int x, int y);
 void				ft_mlx_draw_rectangle(t_all *all, t_point p1,
 											t_point p2, int color);
 void				ft_mlx_draw_sprites(t_all *all);
+void				ft_mlx_draw_sprite_stripe(t_all *all, t_point start,
+												t_dp offset, t_dp t);
+void				draw_sprite(t_all *all, t_list *temp);
+void				ft_mlx_draw_picture(t_all *all, t_point start,
+										t_dp offset, t_dp par);
 void				draw(t_all *all);
 
 void				make_screenshot(t_all *all);

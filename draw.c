@@ -6,13 +6,13 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/25 23:12:32 by zera              #+#    #+#             */
-/*   Updated: 2021/02/26 15:46:56 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/27 14:36:15 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	ft_mlx_draw_stripe(t_all *all, t_dpoint p1, t_dpoint p2, int id)
+void	ft_mlx_draw_stripe(t_all *all, t_dp p1, t_dp p2, int id)
 {
 	unsigned int	color;
 	double			yo;
@@ -39,8 +39,8 @@ void	ft_mlx_draw_stripe(t_all *all, t_dpoint p1, t_dpoint p2, int id)
 
 void	ft_mlx_draw_wall(t_all *all, int x, int wallh, char c)
 {
-	int				id;
-	t_dpoint		p2;
+	int		id;
+	t_dp	p2;
 
 	if (c == 'n')
 	{
@@ -62,25 +62,25 @@ void	ft_mlx_draw_wall(t_all *all, int x, int wallh, char c)
 		p2.x = ((int)all->wall_point.y % all->bit) / ((double)all->bit);
 		id = 3;
 	}
-	ft_mlx_draw_stripe(all, (t_dpoint){x, wallh}, p2, id);
+	ft_mlx_draw_stripe(all, (t_dp){x, wallh, 0, 0}, p2, id);
 }
 
 void	ft_mlx_draw_walls(t_all *all)
 {
-	double	angle;
+	double	a;
 	t_point	wallh;
 	int		i;
 
 	i = 0;
 	while (i < all->settings.r1)
 	{
-		angle = all->player.angle - all->player.fov / 2
+		a = all->player.a - all->player.fov / 2
 					+ all->player.fov * i / all->settings.r1;
-		if (angle <= 0)
-			angle += 2 * M_PI;
-		if (angle > 2 * M_PI)
-			angle -= 2 * M_PI;
-		wallh = get_wallh(all, angle, i);
+		if (a <= 0)
+			a += 2 * M_PI;
+		if (a > 2 * M_PI)
+			a -= 2 * M_PI;
+		wallh = get_wallh(all, a, i);
 		ft_mlx_draw_wall(all, i, wallh.x, wallh.y);
 		i++;
 	}

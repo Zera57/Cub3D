@@ -6,16 +6,17 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/14 18:57:36 by hapryl            #+#    #+#             */
-/*   Updated: 2021/01/20 19:25:56 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/27 14:50:44 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
+# define BUFFER_SIZE 5
 
 # include <stdlib.h>
 # include <unistd.h>
-# include "../lib_ft/libft.h"
+# include "../libft/libft.h"
 
 int		ft_strchr_bool(const char *s, int c);
 char	*ft_substr_gnl(char const *s, size_t len);

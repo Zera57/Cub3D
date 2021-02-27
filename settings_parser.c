@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 13:58:55 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/26 15:46:56 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/27 15:01:33 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ void	parser_r(t_all *all, char *line)
 	int		r2;
 	char	**values;
 
-	if (values[4] != NULL)
-		error("Wrong arguments to Resolution");
 	values = ft_split(line, ' ');
+	if (values[3] != NULL)
+		error("Wrong arguments to Resolution");
 	r1 = ft_atoi(values[1]);
 	r2 = ft_atoi(values[2]);
 	if (r1 < 1 || r2 < 1)
@@ -42,33 +42,25 @@ void	parser_r(t_all *all, char *line)
 void	parser_fc(t_all *all, char *line)
 {
 	char	**values;
-	char	arg[2] = {' ', ','};
 	int		color;
+	int		i;
 
-	values = ft_split_arg(line, arg);
-	if (values[4] == NULL)
-	{
-		color = ft_atoi(values[1]) << 16;
-		color += ft_atoi(values[2]) << 8;
-		color += ft_atoi(values[3]);
-		if (line[0] == 'F')
-		{
-			all->settings.flags |= 0b00000010;
-			all->settings.f = color;
-		}
-		else if (line[0] == 'C')
-		{
-			all->settings.flags |= 0b00000001;
-			all->settings.c = color;
-		}
-	}
-	else
-	{
-		int i = 0;
-		while (values[i])
-			printf("%s", values[i++]);
-		ft_free(values);
+	i = 0;
+	values = ft_split_arg(line, (char[2]){' ', ','});
+	if (values[4] != NULL)
 		error("Not valid F or C");
+	color = ft_atoi(values[1]) << 16;
+	color += ft_atoi(values[2]) << 8;
+	color += ft_atoi(values[3]);
+	if (line[0] == 'F')
+	{
+		all->settings.flags |= 0b00000010;
+		all->settings.f = color;
+	}
+	else if (line[0] == 'C')
+	{
+		all->settings.flags |= 0b00000001;
+		all->settings.c = color;
 	}
 	ft_free(values);
 	free(line);
@@ -76,8 +68,9 @@ void	parser_fc(t_all *all, char *line)
 
 void	parser_map(t_all *all, char *line)
 {
-	all->settings.size_x = ft_strlen(line) > all->settings.size_x ? ft_strlen(line) : all->settings.size_x;
-	if (!all->settings.map)
+	all->settings.size_x = (int)ft_strlen(line) > all->settings.size_x ?
+							ft_strlen(line) : all->settings.size_x;
+	if (all->settings.map == NULL)
 		all->settings.map = ft_lstnew(line);
 	else
 		ft_lstadd_back(&all->settings.map, ft_lstnew(line));
