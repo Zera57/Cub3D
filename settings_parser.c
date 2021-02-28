@@ -6,11 +6,12 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 13:58:55 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/27 16:34:45 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/28 14:15:09 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include "stdio.h"
 
 void	parser_r(t_all *all, char *line)
 {
@@ -21,16 +22,14 @@ void	parser_r(t_all *all, char *line)
 	values = ft_split(line, ' ');
 	if (values[3] != NULL)
 		error("Wrong arguments to Resolution");
-	r1 = ft_atoi(values[1]);
-	r2 = ft_atoi(values[2]);
-	if (r1 < 1 || r2 < 1)
-		error("Resolution is invalid it's must be greater than 0");
-	if (r1 > 2560)
-		r1 = 2560;
-	if (r2 > 1440)
-		r2 = 1440;
-	all->settings.r1 = r1;
-	all->settings.r2 = r2;
+	r1 = 2560;
+	r2 = 1440;
+	printf("R1 %d, R2 %d", r1, r2);
+	if (r1 < ft_atoi(values[1]) || r2 < ft_atoi(values[2]) ||
+		ft_atoi(values[1]) < 1 || ft_atoi(values[2]) < 1)
+		error("Resolution is invalid");
+	all->settings.r1 = ft_atoi(values[1]);
+	all->settings.r2 = ft_atoi(values[2]);
 	all->bit = all->settings.r1;
 	if (!(all->rays = malloc(sizeof(double) * all->settings.r1)))
 		error("Malloc ne videlil");

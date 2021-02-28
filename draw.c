@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/25 23:12:32 by zera              #+#    #+#             */
-/*   Updated: 2021/02/27 14:36:15 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/28 14:15:28 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_mlx_draw_stripe(t_all *all, t_dp p1, t_dp p2, int id)
 	wallh = p1.y;
 	p1.y = all->settings.r2 / 2 - wallh / 2;
 	p2.y = 0;
-	p2.x *= (double)all->textures[id].width;
+	p2.x *= (double)all->textures[id].width / (double)all->bit;
 	yo = (double)all->textures[id].height / wallh;
 	if (p1.y < 0)
 	{
@@ -44,22 +44,22 @@ void	ft_mlx_draw_wall(t_all *all, int x, int wallh, char c)
 
 	if (c == 'n')
 	{
-		p2.x = ((int)all->wall_point.x % all->bit) / ((double)all->bit);
+		p2.x = ((int)all->wall_point.x % all->bit);
 		id = 0;
 	}
 	if (c == 's')
 	{
-		p2.x = ((int)all->wall_point.x % all->bit) / ((double)all->bit);
+		p2.x = all->bit - ((int)all->wall_point.x % all->bit);
 		id = 1;
 	}
 	if (c == 'w')
 	{
-		p2.x = ((int)all->wall_point.y % all->bit) / ((double)all->bit);
+		p2.x = all->bit - ((int)all->wall_point.y % all->bit);
 		id = 2;
 	}
 	if (c == 'e')
 	{
-		p2.x = ((int)all->wall_point.y % all->bit) / ((double)all->bit);
+		p2.x = ((int)all->wall_point.y % all->bit);
 		id = 3;
 	}
 	ft_mlx_draw_stripe(all, (t_dp){x, wallh, 0, 0}, p2, id);

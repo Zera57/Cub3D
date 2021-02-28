@@ -1,11 +1,11 @@
-R 15000 15000
+R 2560 1440
 
-NO ./textures/Cobblestone.xpm
-SO ./textures/Furnace.xpm
-WE ./textures/Oak_Log.xpm
-EA ./textures/Oak_Planks.xpm
+NO ./textures/fon2.xpm
+SO ./textures/fon2.xpm
+WE ./textures/fon2.xpm
+EA ./textures/fon2.xpm
 
-S ./textures/enderman.xpm
+S ./textures/silverhand.xpm
 F 31, 36, 39
 C 43, 165, 245
 

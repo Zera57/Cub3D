@@ -6,7 +6,7 @@
 #    By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/27 15:14:26 by hapryl            #+#    #+#              #
-#    Updated: 2021/02/27 16:31:10 by hapryl           ###   ########.fr        #
+#    Updated: 2021/02/28 15:48:35 by hapryl           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,22 +37,17 @@ FUNC =		draw \
 SRC = $(addprefix $(FOLDER_SRCS), $(FUNC))
 OBJ = $(SRC:=.o)
 LX_DIR = ./minilibx_mms/
-LXFLAGS = -L. -lmlx -framework OpenGL -framework AppKit -g
+LXFLAGS = -lmlx -framework OpenGL -framework AppKit -lm
 LFT_DIR = ./libft/
 LFTFLAGS = -L$(LFT_DIR) -lft
 
 .PHONY: all clean fclean re norme lft lmlx
 
-all: lmlx lft $(NAME)
+all: lft $(NAME)
 	@echo "\033[32m[+] Make completed\033[0m"
 
 $(NAME): $(OBJ)
 	@$(CC) $(OBJ) $(INCLUDES) $(LXFLAGS) $(LFTFLAGS) -lm -o $(NAME)
-
-lmlx:
-	@$(MAKE) -C $(LX_DIR) --silent
-	@cp ./minilibx_mms/libmlx.dylib .
-	@echo  "\033[32m[+] Minilibx_mms builded\033[0m"
 
 lft:
 	@$(MAKE) -C $(LFT_DIR) --silent
