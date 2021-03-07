@@ -6,12 +6,11 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 13:58:55 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/28 14:15:09 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/02/28 16:59:53 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include "stdio.h"
 
 void	parser_r(t_all *all, char *line)
 {
@@ -24,7 +23,6 @@ void	parser_r(t_all *all, char *line)
 		error("Wrong arguments to Resolution");
 	r1 = 2560;
 	r2 = 1440;
-	printf("R1 %d, R2 %d", r1, r2);
 	if (r1 < ft_atoi(values[1]) || r2 < ft_atoi(values[2]) ||
 		ft_atoi(values[1]) < 1 || ft_atoi(values[2]) < 1)
 		error("Resolution is invalid");

@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/14 18:56:44 by hapryl            #+#    #+#             */
-/*   Updated: 2021/01/17 17:26:54 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/03/07 11:41:01 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int		get_next_line(int fd, char **line)
 
 	if (BUFFER_SIZE < 1 || fd < 0 || line == NULL)
 	{
-			return (-1);
+		return (-1);
 	}
 	while ((r = read(fd, buff, BUFFER_SIZE)) > 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 18:56:01 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/27 13:04:37 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/03/07 11:53:28 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void	objects_init(t_all *all)
 		p.x = 0;
 		while (all->map.map[p.y][p.x] != '\0')
 		{
+			if (all->map.map[p.y][p.x] == '0')
+				validate_map(all, p.x, p.y);
 			if (all->map.map[p.y][p.x] == '2')
 				sprite_add(all, p);
 			if (all->map.map[p.y][p.x] == 'N' || all->map.map[p.y][p.x] == 'S'

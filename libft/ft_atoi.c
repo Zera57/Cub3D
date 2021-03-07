@@ -6,13 +6,21 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 15:16:24 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/21 13:59:48 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/03/07 11:36:59 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_atoi(const char *str)
+static int	is_skip(char c)
+{
+	if (c == '\v' || c == '\n' || c == ' '
+			|| c == '\t' || c == '\f' || c == '\r')
+		return (1);
+	return (0);
+}
+
+int			ft_atoi(const char *str)
 {
 	int		negative;
 	long	result;
@@ -22,8 +30,7 @@ int	ft_atoi(const char *str)
 	negative = 1;
 	if (!str)
 		return (0);
-	while (*str == '\v' || *str == '\n' || *str == ' '
-			|| *str == '\t' || *str == '\f' || *str == '\r')
+	while (is_skip(*str))
 		str++;
 	if (*str == '-' || *str == '+')
 	{

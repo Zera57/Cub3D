@@ -6,13 +6,13 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 15:21:10 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/21 12:52:05 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/03/07 11:29:36 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_free(char **s)
+void			*ft_free(char **s)
 {
 	int		i;
 
