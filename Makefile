@@ -6,7 +6,7 @@
 #    By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/27 15:14:26 by hapryl            #+#    #+#              #
-#    Updated: 2021/02/28 15:48:35 by hapryl           ###   ########.fr        #
+#    Updated: 2021/03/08 19:50:54 by hapryl           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,3 +66,6 @@ fclean: clean
 	@rm -f libmlx.dylib
 
 re: fclean all
+
+norm: 
+	norminette *.c *.h libft/*.c libft/*.h gnl/*.c gnl/*.h

@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 19:36:34 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/27 16:31:45 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/03/08 19:55:53 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define CUB3D_H
 
 # include "gnl/get_next_line.h"
-# include "minilibx_mms/mlx.h"
+# include "minilibx_opengl/mlx.h"
 # include <unistd.h>
 # include <errno.h>
 # include <fcntl.h>
@@ -101,6 +101,7 @@ typedef struct		s_all {
 void				fc_set(t_all *all, unsigned int color, char c);
 void				parser_r(t_all *all, char *line);
 void				parser_fc(t_all *all, char *line);
+int					check_parametr_toint(char *str);
 void				parser_map(t_all *all, char *line);
 void				parser_textures(t_all *all, char *line);
 
@@ -120,6 +121,7 @@ double				get_vertical_dist(t_all *all, double a);
 t_point				get_wallh(t_all *all, double a, int i);
 void				error(char *str);
 
+int					key_move(t_all *all, int keycode);
 void				key_w(t_all *all);
 void				key_a(t_all *all);
 void				key_s(t_all *all);
@@ -127,7 +129,8 @@ void				key_d(t_all *all);
 void				key_r(t_all *all);
 void				key_l(t_all *all);
 
-void				my_mlx_pixel_put(t_all *all, int x, int y, unsigned int color);
+void				my_mlx_pixel_put(t_all *all, int x, int y,
+										unsigned int color);
 unsigned int		my_mlx_get_color(t_img *img, int x, int y);
 void				ft_mlx_draw_rectangle(t_all *all, t_point p1,
 											t_point p2, int color);

@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/21 16:23:09 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/27 19:54:52 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/03/08 19:56:21 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,11 @@ void	make_screenshot(t_all *all)
 	unsigned char	head[14];
 	unsigned char	headf[40];
 
+	all->img.img = mlx_new_image(all->mlx, all->settings.r1,
+						all->settings.r2);
+	all->img.addr = mlx_get_data_addr(all->img.img,
+		&all->img.bits_per_pixel, &all->img.line_length, &all->img.endian);
+	key_move(all, -1);
 	i = all->settings.r2;
 	filename = "screen-shot.bmp";
 	ft_bzero(head, 14);

@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 19:23:37 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/27 14:46:55 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/03/08 20:10:02 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,26 @@ void			ft_mlx_draw_rectangle(t_all *all, t_point p1,
 		}
 		i++;
 	}
+}
+
+int				check_parametr_toint(char *str)
+{
+	int num;
+	int i;
+
+	if (!str || !ft_isdigit(*str))
+		error("Param is invalid");
+	num = 0;
+	i = 0;
+	while (*str != '\0')
+	{
+		if (!ft_isdigit(*str))
+			error("Param is invalid");
+		if (num > 16000)
+			return (16000);
+		num *= 10;
+		num += *str - 48;
+		str++;
+	}
+	return (num);
 }

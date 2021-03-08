@@ -6,31 +6,27 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 13:58:55 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/28 16:59:53 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/03/08 19:12:17 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include "stdio.h"
 
 void	parser_r(t_all *all, char *line)
 {
-	int		r1;
-	int		r2;
 	char	**values;
 
 	values = ft_split(line, ' ');
 	if (values[3] != NULL)
 		error("Wrong arguments to Resolution");
-	r1 = 2560;
-	r2 = 1440;
-	if (r1 < ft_atoi(values[1]) || r2 < ft_atoi(values[2]) ||
-		ft_atoi(values[1]) < 1 || ft_atoi(values[2]) < 1)
-		error("Resolution is invalid");
-	all->settings.r1 = ft_atoi(values[1]);
-	all->settings.r2 = ft_atoi(values[2]);
+	all->settings.r1 = check_parametr_toint(values[1]);
+	all->settings.r2 = check_parametr_toint(values[2]);
+	if (all->settings.r1 == 0 || all->settings.r2 == 0)
+		error("param is invalid");
 	all->bit = all->settings.r1;
 	if (!(all->rays = malloc(sizeof(double) * all->settings.r1)))
-		error("Malloc ne videlil");
+		error("Malloc ne videlil rays");
 	ft_free(values);
 	free(line);
 	all->settings.flags |= 0b10000000;
@@ -42,19 +38,19 @@ void	parser_fc(t_all *all, char *line)
 	int		color;
 	int		i;
 
-	i = 0;
+	i = 1;
 	values = ft_split_arg(line, (char[2]){' ', ','});
 	if (values[4] != NULL)
 		error("Not valid F or C");
 	while (values[i] != NULL)
 	{
-		if (ft_atoi(values[i]) < 0 || ft_atoi(values[i]) > 255)
+		if (check_parametr_toint(values[i]) > 255)
 			error("Not valid F or C");
 		i++;
 	}
-	color = ft_atoi(values[1]) << 16;
-	color += ft_atoi(values[2]) << 8;
-	color += ft_atoi(values[3]);
+	color = check_parametr_toint(values[1]) << 16;
+	color += check_parametr_toint(values[2]) << 8;
+	color += check_parametr_toint(values[3]);
 	fc_set(all, color, line[0]);
 	ft_free(values);
 	free(line);

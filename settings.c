@@ -6,13 +6,14 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/17 13:06:39 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/28 14:14:12 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/03/08 20:28:18 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include "stdio.h"
 
-void		set_parametr(t_all *all, char *line)
+void		set_parametr(t_all *all, char *line, int fd)
 {
 	if (line[0] == 'R')
 		parser_r(all, line);
@@ -27,7 +28,12 @@ void		set_parametr(t_all *all, char *line)
 		return ;
 	}
 	else
+	{
 		parser_map(all, line);
+		while (get_next_line(fd, &line) > 0)
+			parser_map(all, line);
+		parser_map(all, line);
+	}
 }
 
 void		check_cub(char *path)
@@ -52,9 +58,9 @@ void		get_settings(t_all *all, char *path)
 	all->settings.has_all = 0;
 	if ((fd = open(path, O_RDONLY)) <= 1)
 		error("Can't find configuration file");
-	while (get_next_line(fd, &line))
-		set_parametr(all, line);
-	set_parametr(all, line);
+	while (get_next_line(fd, &line) > 0)
+		set_parametr(all, line, fd);
+	set_parametr(all, line, fd);
 	if (all->settings.flags != 0b11111111)
 		error("You don't have enough parametrs");
 	set_map(all);

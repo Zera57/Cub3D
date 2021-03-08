@@ -6,7 +6,7 @@
 /*   By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 17:41:39 by hapryl            #+#    #+#             */
-/*   Updated: 2021/02/27 20:24:51 by hapryl           ###   ########.fr       */
+/*   Updated: 2021/03/08 19:55:05 by hapryl           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int		key_move(t_all *all, int keycode)
 	else if (keycode == 124)
 		key_r(all);
 	draw(all);
-	mlx_put_image_to_window(all->mlx, all->mlx_win, all->img.img, 0, 0);
+	if (all->mlx_win)
+		mlx_put_image_to_window(all->mlx, all->mlx_win, all->img.img, 0, 0);
 	return (0);
 }
 
@@ -52,17 +53,21 @@ int		main(int arg, char **argv)
 
 	all.mlx = mlx_init();
 	get_settings(&all, argv[1]);
-	all.mlx_win = mlx_new_window(all.mlx, all.settings.r1,
-						all.settings.r2, "Cub3D");
+	objects_init(&all);
+	all.square = 30;
+	if (arg == 3 && (ft_strncmp("--save", argv[2], 11)) == 0)
+		make_screenshot(&all);
+	if (all.settings.r1 > 2560)
+		all.settings.r1 = 2560;
+	if (all.settings.r2 > 1440)
+		all.settings.r2 = 1440;
 	all.img.img = mlx_new_image(all.mlx, all.settings.r1,
 						all.settings.r2);
 	all.img.addr = mlx_get_data_addr(all.img.img,
 		&all.img.bits_per_pixel, &all.img.line_length, &all.img.endian);
-	all.square = 30;
-	objects_init(&all);
+	all.mlx_win = mlx_new_window(all.mlx, all.settings.r1,
+						all.settings.r2, "Cub3D");
 	key_move(&all, -1);
-	if (arg == 3 && (ft_strncmp("--save", argv[2], 11)) == 0)
-		make_screenshot(&all);
 	mlx_hook(all.mlx_win, 2, 1L << 0, key_hook, &all);
 	mlx_hook(all.mlx_win, 17, 1L << 17, key_esc, &all);
 	mlx_loop(all.mlx);
