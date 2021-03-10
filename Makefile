@@ -6,7 +6,7 @@
 #    By: hapryl <hapryl@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/27 15:14:26 by hapryl            #+#    #+#              #
-#    Updated: 2021/03/08 19:50:54 by hapryl           ###   ########.fr        #
+#    Updated: 2021/03/10 12:55:06 by hapryl           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,18 +36,23 @@ FUNC =		draw \
 			main
 SRC = $(addprefix $(FOLDER_SRCS), $(FUNC))
 OBJ = $(SRC:=.o)
-LX_DIR = ./minilibx_mms/
+LX_DIR = ./minilibx_opengl/
 LXFLAGS = -lmlx -framework OpenGL -framework AppKit -lm
 LFT_DIR = ./libft/
 LFTFLAGS = -L$(LFT_DIR) -lft
 
 .PHONY: all clean fclean re norme lft lmlx
 
-all: lft $(NAME)
+all: lmlx lft $(NAME)
 	@echo "\033[32m[+] Make completed\033[0m"
 
 $(NAME): $(OBJ)
 	@$(CC) $(OBJ) $(INCLUDES) $(LXFLAGS) $(LFTFLAGS) -lm -o $(NAME)
+
+lmlx:
+	@$(MAKE) -s -C $(LX_DIR) --silent
+	@cp ./minilibx_opengl/libmlx.a .
+	@echo  "\033[32m[+] Minilibx_mms builded\033[0m"
 
 lft:
 	@$(MAKE) -C $(LFT_DIR) --silent
@@ -58,14 +63,19 @@ $(OBJ): %.o: %.c
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
+	@$(MAKE) clean -C $(LX_DIR) --silent
+	@$(MAKE) clean -C $(LFT_DIR) --silent
 	@rm -f $(OBJ)
 
 fclean: clean
+	@$(MAKE) clean -C $(LX_DIR) --silent
+	@$(MAKE) fclean -C $(LFT_DIR) --silent
 	@rm -f $(NAME)
 	@rm -f screenshot.bmp
-	@rm -f libmlx.dylib
+	@rm -f libmlx.a
 
 re: fclean all
 
 norm: 
-	norminette *.c *.h libft/*.c libft/*.h gnl/*.c gnl/*.h
+	@$(MAKE) norm -C $(LFT_DIR) --silent
+	@norminette *.c *.h gnl/*.c gnl/*.h
