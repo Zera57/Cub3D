@@ -10,19 +10,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include "cub3d.h"
 
 void	sprite_add(t_all *all, t_point p)
 {
 	t_dp	*dp;
 
+	printf("Add sprite\n");
 	dp = malloc(sizeof(t_dp));
 	dp->x = (p.x + 0.5) * all->bit;
 	dp->y = (p.y + 0.5) * all->bit;
-	if (!all->list_s)
+	if (!all->list_s){
 		all->list_s = ft_lstnew(dp);
-	else
+		printf("Created\n");
+	}
+	else {
 		ft_lstadd_front(&all->list_s, ft_lstnew(dp));
+		printf("Added\n");
+	}
 }
 
 void	player_init(t_all *all, t_point p, char c)
@@ -50,6 +56,7 @@ void	objects_init(t_all *all)
 
 	p.y = 0;
 	all->player.count = 0;
+	all->list_s = NULL;
 	while (p.y < all->map.height)
 	{
 		p.x = 0;

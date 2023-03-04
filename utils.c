@@ -58,12 +58,10 @@ void			ft_mlx_draw_rectangle(t_all *all, t_point p1,
 int				check_parametr_toint(char *str)
 {
 	int num;
-	int i;
 
 	if (!str || !ft_isdigit(*str))
 		error("Param is invalid");
 	num = 0;
-	i = 0;
 	while (*str != '\0')
 	{
 		if (!ft_isdigit(*str))

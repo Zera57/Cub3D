@@ -37,7 +37,7 @@ FUNC =		draw \
 SRC = $(addprefix $(FOLDER_SRCS), $(FUNC))
 OBJ = $(SRC:=.o)
 LX_DIR = ./minilibx_opengl/
-LXFLAGS = -lmlx -framework OpenGL -framework AppKit -lm
+LXFLAGS = -L. -lmlx -framework OpenGL -framework AppKit -lm
 LFT_DIR = ./libft/
 LFTFLAGS = -L$(LFT_DIR) -lft
 

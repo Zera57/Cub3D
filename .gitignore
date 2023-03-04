@@ -2,3 +2,5 @@
 *json
 *.o
 11750.jpg
+*.a
+cub3D
